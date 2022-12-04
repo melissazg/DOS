@@ -1,6 +1,11 @@
 package com.dos;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
+
+import com.dos.Card.Color;
+import com.dos.Card.Value;
 
 public class GameTest {
     @Test
@@ -10,7 +15,15 @@ public class GameTest {
 
     @Test
     void testGetCurrentPlayer() {
-
+        String[] playerIds = {"1","2","3"};
+        final Deck deck;
+        Game jeu = new Game(playerIds); 
+       
+        
+        int currentPlayer = 3;
+        
+        jeu.getCurrentPlayer();
+        assertEquals(3, jeu.getCurrentPlayer());
     }
 
     @Test
@@ -55,6 +68,11 @@ public class GameTest {
 
     @Test
     void testSetCardColor() {
+        Card carte = new Card (Color.RED, Value.FOUR);
+        Game jeu = new Game('Dida');
+        jeu.setCardColor(Color.RED);
+        assertEquals(Color.RED, carte.getColor()); 
+
 
     }
 

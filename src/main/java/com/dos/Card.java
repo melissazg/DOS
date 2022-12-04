@@ -40,6 +40,7 @@ public class Card {
         } 
     }
 
+
     private final Color color;
     private final Value value;
 

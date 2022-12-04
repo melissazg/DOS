@@ -80,7 +80,7 @@ public class Deck {
 
         for (int i = 0; i < cards.length; i++) {
             int randomValue = i + random.nextInt(n - i);
-            Dos randomCard = cards[randomValue];
+            Card randomCard = cards[randomValue];
             cards[randomValue] = cards[i];
             cards[i] = randomCard;
         }

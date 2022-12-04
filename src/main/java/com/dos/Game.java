@@ -105,12 +105,21 @@ public class Game {
         return getPlayerHand(pid).isEmpty();
     }
 
+    public Card.Value decompositionValue (int value){
+        Card.Value [] values = Card.Value.values();
+        for (int i=0; i<= value/2; i++){
+            value = value-1;
+            values[0], values[value];
+        }
+
+
+    }
     public boolean validCardPlay(Card card) {
         return card.getColor() == validColor || card.getValue() == validValue;
     }
 
     public void checkPlayerTurn(String pid) throws InvalidPlayerTurnException {
-        if (his.playerIds[this.currentPlayer] != pid) {
+        if (this.playerIds[this.currentPlayer] != pid) {
             throw new InvalidPlayerTurnException("it is not " + pid + " 's turn", pid);
         }
     }
@@ -198,5 +207,3 @@ class InvalidValueSubmissionException extends Exception {
         this.expected = expected;
     }
 }
-
-public 
