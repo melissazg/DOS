@@ -3,8 +3,6 @@ package com.dos;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.JLabel;
-
 public class Game {
 
     private int currentPlayer;
@@ -67,14 +65,6 @@ public class Game {
         return this.playerIds[this.currentPlayer];
     }
 
-    public String getPreviousPlayer(int i) {
-        int index = this.currentPlayer - i;
-        if (index == -1) {
-            index = playerIds.length - 1;
-        }
-        return this.playerIds[index];
-    }
-
     public String[] getPlayers() {
         return playerIds;
     }
@@ -105,31 +95,15 @@ public class Game {
         return getPlayerHand(pid).isEmpty();
     }
 
-    public Card.Value decompositionValue (int value){
-        Card.Value [] values = Card.Value.values();
-        for (int i=0; i<= value/2; i++){
-            value = value-1;
-            values[0], values[value];
-        }
-
-
-    }
     public boolean validCardPlay(Card card) {
         return card.getColor() == validColor || card.getValue() == validValue;
-    }
-
-    public void checkPlayerTurn(String pid) throws InvalidPlayerTurnException {
-        if (this.playerIds[this.currentPlayer] != pid) {
-            throw new InvalidPlayerTurnException("it is not " + pid + " 's turn", pid);
-        }
     }
 
     /**
      * submit draw
      */
 
-    public void submitDraw(String pid) throws InvalidPlayerTurnException {
-        checkPlayerTurn(pid);
+    public void submitDraw(String pid) {
 
         if (deck.isEmpty()) {
             deck.replaceDeckWith(stockPile);
@@ -137,17 +111,13 @@ public class Game {
         }
 
         getPlayerHand(pid).add(deck.drawCard());
-
-        currentPlayer = (currentPlayer + 1) % playerIds.length;
     }
 
     public void setCardColor(Card.Color color) {
         validColor = color;
     }
 
-    public void submitPlayerCard(String pid, Card card, Card.Color declaredColor)
-        throws InvalidColorSubmissionException, InvalidValueSubmissionException, InvalidPlayerTurnException {
-            checkPlayerTurn(pid);
+    public void submitPlayerCard(String pid, Card card) {
 
             ArrayList<Card> pHand = getPlayerHand(pid);
 
@@ -157,53 +127,20 @@ public class Game {
                     validValue = card.getValue();
                 }
                 if (card.getColor() != validColor) {
-                    throw new InvalidColorSubmissionException(message, card.getColor(), validColor);
+                    System.out.println("Veuillez mettre une autre carte.");
                 }
                 if (card.getValue() != validValue) {
-                    throw new InvalidValueSubmissionException(message, card.getColor(), validColor);
+                    System.out.println("Veuillez mettre une autre carte.");
                 }
             }
             pHand.remove(card);
 
             if (hasEmptyHand(this.playerIds[currentPlayer])) {
-
+                System.out.println(currentPlayer + "a gagné.");
             }
 
             validColor = card.getColor();
             validValue = card.getValue();
             stockPile.add(card);
-    }
-}
-
-class InvalidPlayerTurnException extends Exception {
-    String playerId;
-
-    public InvalidPlayerTurnException(String message, String pid) {
-        super(message);
-        playerId = pid;
-    }
-
-    public String getPid() {
-        return playerId;
-    }
-}
-
-class InvalidColorSubmissionException extends Exception {
-    private Card.Color expected;
-    private Card.Color actual;
-
-    public InvalidColorSubmissionException(String message, Card.Color actual, Card.Color expected) {
-        this.actual = actual;
-        this.expected = expected;
-    }
-}
-
-class InvalidValueSubmissionException extends Exception {
-    private Card.Value expected;
-    private Card.Value actual;
-
-    public InvalidColorSubmissionException(String message, Card.Color actual, Card.Color expected) {
-        this.actual = actual;
-        this.expected = expected;
     }
 }
