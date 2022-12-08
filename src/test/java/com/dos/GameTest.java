@@ -16,7 +16,7 @@ public class GameTest {
     @Test
     void testGetCurrentPlayer() {
         String[] playerIds = {"1","2","3"};
-        final Deck deck;
+        final Deck deck = new Deck();
         Game jeu = new Game(playerIds); 
        
         
@@ -47,11 +47,6 @@ public class GameTest {
     }
 
     @Test
-    void testGetPreviousPlayer() {
-
-    }
-
-    @Test
     void testGetTopCard() {
 
     }
@@ -69,7 +64,7 @@ public class GameTest {
     @Test
     void testSetCardColor() {
         Card carte = new Card (Color.RED, Value.FOUR);
-        Game jeu = new Game('Dida');
+        Game jeu = new Game();
         jeu.setCardColor(Color.RED);
         assertEquals(Color.RED, carte.getColor()); 
 

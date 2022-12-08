@@ -2,11 +2,12 @@ package com.dos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Game {
 
     private int currentPlayer;
-    private String[] playerIds;
+    private List<String> playerIds;
 
     private Deck deck;
     private ArrayList<ArrayList<Card>> playerHand;
@@ -16,19 +17,20 @@ public class Game {
     private Card.Value validValue;
     
 
-    public Game(String[] pids) {
-        deck = new Deck();
+    public Game(List<String> pids) {
+        this.deck = new Deck();
+        deck.reset();
         deck.shuffle();
-        stockPile = new ArrayList<Card>();
+        this.stockPile = new ArrayList<Card>();
 
-        playerIds = pids;
-        currentPlayer = 0;
+        this.playerIds = pids;
+        this.currentPlayer = 0;
 
-        playerHand = new ArrayList<ArrayList<Card>>();
+        this.playerHand = new ArrayList<ArrayList<Card>>();
 
-        for (int i = 0; i < pids.length; i++) {
+        for (int i = 0; i < pids.size(); i++) {
             ArrayList<Card> hand = new ArrayList<Card>(Arrays.asList(deck.drawCard(7)));
-            playerHand.add(hand);
+            this.playerHand.add(hand);
         }
     }
 
@@ -37,10 +39,9 @@ public class Game {
         validColor = card.getColor();
         validValue = card.getValue();
 
-        if (card.getValue() == Card.Value.WILD || card.getValue() == Card.Value.WILD_TWO) {
+        if (card.getValue() == Card.Value.WILD_TWO) {
             start(game);
         }
-
         stockPile.add(card);
     }
 
@@ -62,10 +63,10 @@ public class Game {
     }
 
     public String getCurrentPlayer() {
-        return this.playerIds[this.currentPlayer];
+        return this.playerIds.get(this.currentPlayer);
     }
 
-    public String[] getPlayers() {
+    public List<String> getPlayers() {
         return playerIds;
     }
    
@@ -74,7 +75,7 @@ public class Game {
      */
 
     public ArrayList<Card> getPlayerHand(String pid) {
-        int index = Arrays.asList(playerIds).indexOf(pid);
+        int index = playerIds.indexOf(pid);
         return playerHand.get(index);
     }
 
@@ -117,30 +118,70 @@ public class Game {
         validColor = color;
     }
 
-    public void submitPlayerCard(String pid, Card card) {
+    public void submitPlayerCard(String pid) {
 
-            ArrayList<Card> pHand = getPlayerHand(pid);
+        ArrayList<Card> pHand = getPlayerHand(pid);
+        int red = 0;
+        int yellow = 0;
+        int blue = 0;
+        int green = 0;
+        
+        for (Card card : pHand) {
+
+            if (card.getColor() == Card.Color.RED) {
+                red++;
+            }
+            else if (card.getColor() == Card.Color.YELLOW) {
+                yellow++;
+            }
+            else if (card.getColor() == Card.Color.BLUE) {
+                blue++;
+            }
+            else if (card.getColor() == Card.Color.GREEN) {
+                green++;
+            }
+
+            int[] t = {red, yellow, blue, green};
+
+            int indCouleurMax = 0;
+            int max = t[0];
+            for (int i = 1; i < t.length ; i++) {
+                if (max < t[i]) {
+                    max = t[i];
+                    indCouleurMax = i;
+                }
+            }
+            Card.Color laCouleurMax = Card.Color.WILD;
+            if (indCouleurMax == 0) {
+                laCouleurMax = Card.Color.RED;
+            }
+            else if (indCouleurMax == 1) {
+                laCouleurMax = Card.Color.YELLOW;
+            }
+            else if (indCouleurMax == 2) {
+                laCouleurMax = Card.Color.BLUE;
+            }
+            else if (indCouleurMax == 3) {
+                laCouleurMax = Card.Color.GREEN;
+            }
 
             if (!validCardPlay(card)) {
                 if (card.getColor() == Card.Color.WILD) {
-                    validColor = card.getColor();
+                    validColor = laCouleurMax;
                     validValue = card.getValue();
+                    stockPile.add(card);
                 }
-                if (card.getColor() != validColor) {
-                    System.out.println("Veuillez mettre une autre carte.");
-                }
-                if (card.getValue() != validValue) {
-                    System.out.println("Veuillez mettre une autre carte.");
+                else{
+                    deck.drawCard(1);
                 }
             }
-            pHand.remove(card);
-
-            if (hasEmptyHand(this.playerIds[currentPlayer])) {
-                System.out.println(currentPlayer + "a gagné.");
+            else {
+                pHand.remove(card);
+                validColor = card.getColor();
+                validValue = card.getValue();
+                stockPile.add(card);
+                break;
             }
-
-            validColor = card.getColor();
-            validValue = card.getValue();
-            stockPile.add(card);
+        }
     }
 }

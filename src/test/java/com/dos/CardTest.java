@@ -8,28 +8,24 @@ import com.dos.Card.Color;
 import com.dos.Card.Value;
 
 public class CardTest {
-    /**
-     * 
-     */
+
     @Test
     void testGetColor() {
-       
-        Card carte = new Card (Color.RED, Value.FOUR);
-        carte.getColor();
-        assertEquals(Color.RED, carte.getColor());
-
-
+        Card card = new Card (Color.RED, Value.FOUR);
+        card.getColor();
+        assertEquals(Color.RED, card.getColor());
     }
 
     @Test
     void testGetValue() {
-        Card carte = new Card (Color.RED, Value.FOUR);
-        carte.getValue();
-        assertEquals(Value.FOUR, carte.getValue());
+        Card card = new Card (Color.RED, Value.FOUR);
+        card.getValue();
+        assertEquals(Value.FOUR, card.getValue());
     }
 
     @Test
     void testToString() {
-
+        Card card = new Card (Color.RED, Value.FOUR);
+        assertEquals("RED_FOUR", card.toString());
     }
 }

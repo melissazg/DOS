@@ -1,9 +1,6 @@
 package com.dos;
 
-import com.dos.Card;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -29,12 +26,12 @@ public class Deck {
     private int cardsInDeck;
 
     public Deck() {
-        cards = new Card[108];
+        this.cards = new Card[108];
     }
 
     public void reset() {
         Card.Color[] colors = Card.Color.values();
-        cardsInDeck = 0;
+        this.cardsInDeck = 0;
 
         for (int i = 0; i < colors.length-1; i++) {
             Card.Color color = colors[i];
@@ -56,11 +53,6 @@ public class Deck {
                 cards[cardsInDeck++] = new Card(color, Card.Value.getValue(j));
                 cards[cardsInDeck++] = new Card(color, Card.Value.getValue(j));
             }
-
-            for (int j = 0; j < 2 ; j++) {
-                cards[cardsInDeck++] = new Card(Card.Color.WILD, Card.Value.WILD);
-            }
-
             cards[cardsInDeck++] = new Card(Card.Color.WILD, Card.Value.WILD_TWO);
         }
     }
