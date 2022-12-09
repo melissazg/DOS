@@ -44,6 +44,10 @@ public class Game {
         }
         stockPile.add(card);
     }
+    
+    public ArrayList<Card> getStockPile() {
+        return stockPile;
+    }
 
     public Card getTopCard() {
         return new Card(validColor, validValue);
@@ -100,17 +104,17 @@ public class Game {
         return card.getColor() == validColor || card.getValue() == validValue;
     }
 
+
+
     /**
      * submit draw
      */
 
     public void submitDraw(String pid) {
-
         if (deck.isEmpty()) {
             deck.replaceDeckWith(stockPile);
             deck.shuffle();
         }
-
         getPlayerHand(pid).add(deck.drawCard());
     }
 
@@ -170,9 +174,6 @@ public class Game {
                     validColor = laCouleurMax;
                     validValue = card.getValue();
                     stockPile.add(card);
-                }
-                else{
-                    deck.drawCard(1);
                 }
             }
             else {
