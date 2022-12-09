@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dos</a> &gt; <a href="index.source.html" class="el_package">com.dos</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package com.dos;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Game {
+
+    private int currentPlayer;
+    private List&lt;String&gt; playerIds;
+
+    private Deck deck;
+    private ArrayList&lt;ArrayList&lt;Card&gt;&gt; playerHand;
+    private ArrayList&lt;Card&gt; stockPile;
+
+    private Card.Color validColor;
+    private Card.Value validValue;
+    
+
+<span class="nc" id="L20">    public Game(List&lt;String&gt; pids) {</span>
+<span class="nc" id="L21">        this.deck = new Deck();</span>
+<span class="nc" id="L22">        deck.reset();</span>
+<span class="nc" id="L23">        deck.shuffle();</span>
+<span class="nc" id="L24">        this.stockPile = new ArrayList&lt;Card&gt;();</span>
+
+<span class="nc" id="L26">        this.playerIds = pids;</span>
+<span class="nc" id="L27">        this.currentPlayer = 0;</span>
+
+<span class="nc" id="L29">        this.playerHand = new ArrayList&lt;ArrayList&lt;Card&gt;&gt;();</span>
+
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        for (int i = 0; i &lt; pids.size(); i++) {</span>
+<span class="nc" id="L32">            ArrayList&lt;Card&gt; hand = new ArrayList&lt;Card&gt;(Arrays.asList(deck.drawCard(7)));</span>
+<span class="nc" id="L33">            this.playerHand.add(hand);</span>
+        }
+<span class="nc" id="L35">    }</span>
+
+    public void start(Game game) {
+<span class="nc" id="L38">        Card card = deck.drawCard();</span>
+<span class="nc" id="L39">        validColor = card.getColor();</span>
+<span class="nc" id="L40">        validValue = card.getValue();</span>
+
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (card.getValue() == Card.Value.WILD_TWO) {</span>
+<span class="nc" id="L43">            start(game);</span>
+        }
+<span class="nc" id="L45">        stockPile.add(card);</span>
+<span class="nc" id="L46">    }</span>
+    
+    public ArrayList&lt;Card&gt; getStockPile() {
+<span class="nc" id="L49">        return stockPile;</span>
+    }
+
+    public Card getTopCard() {
+<span class="nc" id="L53">        return new Card(validColor, validValue);</span>
+    }
+
+    /**
+     * game over methods
+     */
+
+    public boolean isGameOver() {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        for (String player : this.playerIds) {</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            if (hasEmptyHand(player)) {</span>
+<span class="nc" id="L63">                return true;</span>
+            }
+<span class="nc" id="L65">        }</span>
+<span class="nc" id="L66">        return false;</span>
+    }
+
+    public String getCurrentPlayer() {
+<span class="nc" id="L70">        return this.playerIds.get(this.currentPlayer);</span>
+    }
+
+    public List&lt;String&gt; getPlayers() {
+<span class="nc" id="L74">        return playerIds;</span>
+    }
+   
+    /**
+     * find player hand
+     */
+
+    public ArrayList&lt;Card&gt; getPlayerHand(String pid) {
+<span class="nc" id="L82">        int index = playerIds.indexOf(pid);</span>
+<span class="nc" id="L83">        return playerHand.get(index);</span>
+    }
+
+    public int getPlayerHandSize(String pid) {
+<span class="nc" id="L87">        return getPlayerHand(pid).size();</span>
+    }
+
+    /**
+     * check player hand
+     */
+
+    public Card getPlayerCard(String pid, int choice) {
+<span class="nc" id="L95">        ArrayList&lt;Card&gt; hand = getPlayerHand(pid);</span>
+<span class="nc" id="L96">        return hand.get(choice);</span>
+    }
+
+    public boolean hasEmptyHand(String pid) {
+<span class="nc" id="L100">        return getPlayerHand(pid).isEmpty();</span>
+    }
+
+    public boolean validCardPlay(Card card) {
+<span class="nc bnc" id="L104" title="All 4 branches missed.">        return card.getColor() == validColor || card.getValue() == validValue;</span>
+    }
+
+
+
+    /**
+     * submit draw
+     */
+
+    public void submitDraw(String pid) {
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (deck.isEmpty()) {</span>
+<span class="nc" id="L116">            deck.replaceDeckWith(stockPile);</span>
+<span class="nc" id="L117">            deck.shuffle();</span>
+        }
+
+<span class="nc" id="L120">        getPlayerHand(pid).add(deck.drawCard());</span>
+<span class="nc" id="L121">    }</span>
+
+    public void setCardColor(Card.Color color) {
+<span class="nc" id="L124">        validColor = color;</span>
+<span class="nc" id="L125">    }</span>
+
+    public void submitPlayerCard(String pid) {
+
+<span class="nc" id="L129">        ArrayList&lt;Card&gt; pHand = getPlayerHand(pid);</span>
+<span class="nc" id="L130">        int red = 0;</span>
+<span class="nc" id="L131">        int yellow = 0;</span>
+<span class="nc" id="L132">        int blue = 0;</span>
+<span class="nc" id="L133">        int green = 0;</span>
+        
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        for (Card card : pHand) {</span>
+
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (card.getColor() == Card.Color.RED) {</span>
+<span class="nc" id="L138">                red++;</span>
+            }
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            else if (card.getColor() == Card.Color.YELLOW) {</span>
+<span class="nc" id="L141">                yellow++;</span>
+            }
+<span class="nc bnc" id="L143" title="All 2 branches missed.">            else if (card.getColor() == Card.Color.BLUE) {</span>
+<span class="nc" id="L144">                blue++;</span>
+            }
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            else if (card.getColor() == Card.Color.GREEN) {</span>
+<span class="nc" id="L147">                green++;</span>
+            }
+
+<span class="nc" id="L150">            int[] t = {red, yellow, blue, green};</span>
+
+<span class="nc" id="L152">            int indCouleurMax = 0;</span>
+<span class="nc" id="L153">            int max = t[0];</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            for (int i = 1; i &lt; t.length ; i++) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                if (max &lt; t[i]) {</span>
+<span class="nc" id="L156">                    max = t[i];</span>
+<span class="nc" id="L157">                    indCouleurMax = i;</span>
+                }
+            }
+<span class="nc" id="L160">            Card.Color laCouleurMax = Card.Color.WILD;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if (indCouleurMax == 0) {</span>
+<span class="nc" id="L162">                laCouleurMax = Card.Color.RED;</span>
+            }
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            else if (indCouleurMax == 1) {</span>
+<span class="nc" id="L165">                laCouleurMax = Card.Color.YELLOW;</span>
+            }
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            else if (indCouleurMax == 2) {</span>
+<span class="nc" id="L168">                laCouleurMax = Card.Color.BLUE;</span>
+            }
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            else if (indCouleurMax == 3) {</span>
+<span class="nc" id="L171">                laCouleurMax = Card.Color.GREEN;</span>
+            }
+
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            if (!validCardPlay(card)) {</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                if (card.getColor() == Card.Color.WILD) {</span>
+<span class="nc" id="L176">                    validColor = laCouleurMax;</span>
+<span class="nc" id="L177">                    validValue = card.getValue();</span>
+<span class="nc" id="L178">                    stockPile.add(card);</span>
+                }
+                else{
+<span class="nc" id="L181">                    deck.drawCard(1);</span>
+                }
+            }
+            else {
+<span class="nc" id="L185">                pHand.remove(card);</span>
+<span class="nc" id="L186">                validColor = card.getColor();</span>
+<span class="nc" id="L187">                validValue = card.getValue();</span>
+<span class="nc" id="L188">                stockPile.add(card);</span>
+<span class="nc" id="L189">                break;</span>
+            }
+<span class="nc" id="L191">        }</span>
+<span class="nc" id="L192">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

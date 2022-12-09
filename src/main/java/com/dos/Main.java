@@ -12,7 +12,6 @@ public class Main {
         deck.reset();
 
         final List<String> playerId = new ArrayList<String>();
-        //ArrayList<Card> stockPile = new ArrayList<Card>();
 
         int nbJoueursEnJeu = 3;
 
@@ -27,18 +26,16 @@ public class Main {
 
         players.addAll(game.getPlayers());
 
-        int j = 0;
+        int j = 1;
 
         while (players.size() > nbJoueursEnJeu - 1) {
             System.out.println("Round " + j++);
             System.out.println("Main du J1 : " + game.getPlayerHand(playerId.get(0)).toString());
             System.out.println("Main du J2 : " + game.getPlayerHand(playerId.get(1)).toString());
             System.out.println("Main du J3 : " + game.getPlayerHand(playerId.get(2)).toString() + "\n");
-            //System.out.println("StockPile : " + stockPile + "\n");
+            System.out.println("StockPile : " + game.getStockPile() + "\n");
 
-            //take the first player form the queue
             String firstPlayerInRound = players.poll();
-            //and put it immediately at the end
             players.offer(firstPlayerInRound);
 
             game.submitPlayerCard(firstPlayerInRound);
@@ -48,14 +45,11 @@ public class Main {
                 System.out.println("Main du J1 : " + game.getPlayerHand(playerId.get(0)).toString());
                 System.out.println("Main du J2 : " + game.getPlayerHand(playerId.get(1)).toString());
                 System.out.println("Main du J3 : " + game.getPlayerHand(playerId.get(2)).toString());
-                System.out.println("\n" + firstPlayerInRound + " a gagné.");
+                System.out.println("StockPile : " + game.getStockPile());
+                System.out.println("\n" + firstPlayerInRound + " a gagné.\n");
                 firstPlayerInRound = players.poll();
             }
-            //game.submitDraw(firstPlayerInRound);
-
-        }
-        //since we've left the loop, we have only 1 player left: the winner
-        
+        }        
     }
        /* initialise les players (chacun un id)
        on distribue les cartes 
