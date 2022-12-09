@@ -57,15 +57,6 @@ public class Game {
      * game over methods
      */
 
-    public boolean isGameOver() {
-        for (String player : this.playerIds) {
-            if (hasEmptyHand(player)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public String getCurrentPlayer() {
         return this.playerIds.get(this.currentPlayer);
     }
@@ -104,8 +95,6 @@ public class Game {
         return card.getColor() == validColor || card.getValue() == validValue;
     }
 
-
-
     /**
      * submit draw
      */
@@ -129,7 +118,11 @@ public class Game {
         int yellow = 0;
         int blue = 0;
         int green = 0;
-        
+        int counterFalse = 0;
+
+        boolean [] valider = new boolean [getPlayerHandSize(playerIds.get(currentPlayer))];
+        int i = 0; 
+
         for (Card card : pHand) {
 
             if (card.getColor() == Card.Color.RED) {
@@ -145,38 +138,44 @@ public class Game {
                 green++;
             }
 
-            int[] t = {red, yellow, blue, green};
-
-            int indCouleurMax = 0;
-            int max = t[0];
-            for (int i = 1; i < t.length ; i++) {
-                if (max < t[i]) {
-                    max = t[i];
-                    indCouleurMax = i;
-                }
-            }
-            Card.Color laCouleurMax = Card.Color.WILD;
-            if (indCouleurMax == 0) {
-                laCouleurMax = Card.Color.RED;
-            }
-            else if (indCouleurMax == 1) {
-                laCouleurMax = Card.Color.YELLOW;
-            }
-            else if (indCouleurMax == 2) {
-                laCouleurMax = Card.Color.BLUE;
-            }
-            else if (indCouleurMax == 3) {
-                laCouleurMax = Card.Color.GREEN;
-            }
-
             if (!validCardPlay(card)) {
+
                 if (card.getColor() == Card.Color.WILD) {
+                    int[] t = {red, yellow, blue, green};
+
+                    int indCouleurMax = 0;
+                    int max = t[0];
+                    for (int k = 1; k < t.length ; k++) {
+                        if (max < t[k]) {
+                            max = t[k];
+                            indCouleurMax = k;
+                        }
+                    }
+                    Card.Color laCouleurMax = Card.Color.WILD;
+                    if (indCouleurMax == 0) {
+                        laCouleurMax = Card.Color.RED;
+                    }
+                    else if (indCouleurMax == 1) {
+                        laCouleurMax = Card.Color.YELLOW;
+                    }
+                    else if (indCouleurMax == 2) {
+                        laCouleurMax = Card.Color.BLUE;
+                    }
+                    else if (indCouleurMax == 3) {
+                        laCouleurMax = Card.Color.GREEN;
+                    }
+
                     validColor = laCouleurMax;
                     validValue = card.getValue();
+                    pHand.remove(card);
                     stockPile.add(card);
+                    break;
                 }
+                
+                
             }
             else {
+                valider [i++] = true; 
                 pHand.remove(card);
                 validColor = card.getColor();
                 validValue = card.getValue();
@@ -184,5 +183,17 @@ public class Game {
                 break;
             }
         }
+        for (int j=0; j<valider.length; j++){
+            if (valider[j]== false){
+                ++counterFalse;
+            }
+        }
+        //System.out.println("counterFalse " + counterFalse);
+
+        if (counterFalse == valider.length) {
+            submitDraw(playerIds.get(currentPlayer));
+        }
+        currentPlayer = (currentPlayer + 1) % playerIds.size();
+        
     }
 }

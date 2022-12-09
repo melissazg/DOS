@@ -23,6 +23,7 @@ public class Main {
         game.start(game);
 
         final Queue<String> players = new LinkedList<>();
+        
 
         players.addAll(game.getPlayers());
 
@@ -30,10 +31,12 @@ public class Main {
 
         while (players.size() > nbJoueursEnJeu - 1) {
             System.out.println("Round " + j++);
+            System.out.println("C'est au  " + game.getCurrentPlayer() + " de jouer \n");
             System.out.println("Main du J1 : " + game.getPlayerHand(playerId.get(0)).toString());
             System.out.println("Main du J2 : " + game.getPlayerHand(playerId.get(1)).toString());
             System.out.println("Main du J3 : " + game.getPlayerHand(playerId.get(2)).toString() + "\n");
             System.out.println("StockPile : " + game.getStockPile() + "\n");
+            
 
             String firstPlayerInRound = players.poll();
             players.offer(firstPlayerInRound);
@@ -41,7 +44,7 @@ public class Main {
             game.submitPlayerCard(firstPlayerInRound);
 
             if (game.hasEmptyHand(firstPlayerInRound)) {
-                System.out.println("Round " + j);
+                System.out.println("Fin de la partie");
                 System.out.println("Main du J1 : " + game.getPlayerHand(playerId.get(0)).toString());
                 System.out.println("Main du J2 : " + game.getPlayerHand(playerId.get(1)).toString());
                 System.out.println("Main du J3 : " + game.getPlayerHand(playerId.get(2)).toString());
