@@ -30,7 +30,6 @@ Les joueurs sont répartis dans l'ordre d'arrivée. Chaque joueur pose à son to
 
 Lorsqu’il ne reste que deux cartes, il faut crier « DOS ».  Si un joueur se débarrasse de toutes ses cartes en premier, il a gagné.
 
-
 # Protocole réseau
 
 > Le protocole réseau définit les séquences des commandes échangées entre les différentes parties prenantes. Il doit contenir, pour chaque commande, l'expéditeur, le destinataire, le nom de la commande et le contenu du corps de la commande.

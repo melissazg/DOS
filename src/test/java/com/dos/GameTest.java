@@ -1,11 +1,6 @@
 package com.dos;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
-
-import com.dos.Card.Color;
-import com.dos.Card.Value;
 
 public class GameTest {
     @Test

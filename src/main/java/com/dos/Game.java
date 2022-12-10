@@ -2,6 +2,7 @@ package com.dos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Game {
@@ -16,7 +17,6 @@ public class Game {
     private Card.Color validColor;
     private Card.Value validValue;
     
-
     public Game(List<String> pids) {
         this.deck = new Deck();
         deck.reset();
@@ -111,36 +111,59 @@ public class Game {
         validColor = color;
     }
 
+    public void yellDos(String pid) {
+        if (getPlayerHand(pid).size() == 1) {
+            System.out.println(pid + " crie \"DOS\" ! \n");
+        }
+    }
+
     public void submitPlayerCard(String pid) {
 
         ArrayList<Card> pHand = getPlayerHand(pid);
-        int red = 0;
-        int yellow = 0;
-        int blue = 0;
-        int green = 0;
+  
+        // si toutes les cartes de la main du joueur ne sont pas valides (tout le tableau contient des false), il piochera
+        boolean [] invalidCards = new boolean [getPlayerHandSize(playerIds.get(currentPlayer))];
         int counterFalse = 0;
-
-        boolean [] valider = new boolean [getPlayerHandSize(playerIds.get(currentPlayer))];
         int i = 0; 
 
         for (Card card : pHand) {
 
-            if (card.getColor() == Card.Color.RED) {
-                red++;
-            }
-            else if (card.getColor() == Card.Color.YELLOW) {
-                yellow++;
-            }
-            else if (card.getColor() == Card.Color.BLUE) {
-                blue++;
-            }
-            else if (card.getColor() == Card.Color.GREEN) {
-                green++;
-            }
+            if (validCardPlay(card)) {
 
-            if (!validCardPlay(card)) {
+                invalidCards[i++] = true; 
 
+                validColor = card.getColor();
+                validValue = card.getValue();
+
+                yellDos(pid);
+                pHand.remove(card);
+                stockPile.add(card);
+                System.out.println(pid + " joue la carte " + card + ".");
+                break;
+            }
+            else {
                 if (card.getColor() == Card.Color.WILD) {
+
+                    invalidCards[i++] = true; 
+
+                    int red = 0;
+                    int yellow = 0;
+                    int blue = 0;
+                    int green = 0;
+    
+                    if (card.getColor() == Card.Color.RED) {
+                        red++;
+                    }
+                    else if (card.getColor() == Card.Color.YELLOW) {
+                        yellow++;
+                    }
+                    else if (card.getColor() == Card.Color.BLUE) {
+                        blue++;
+                    }
+                    else if (card.getColor() == Card.Color.GREEN) {
+                        green++;
+                    }
+
                     int[] t = {red, yellow, blue, green};
 
                     int indCouleurMax = 0;
@@ -168,32 +191,23 @@ public class Game {
                     validColor = laCouleurMax;
                     validValue = card.getValue();
                     pHand.remove(card);
+                    yellDos(pid);
                     stockPile.add(card);
+                    System.out.println(pid + " joue la carte " + card.toString() + ".");
                     break;
                 }
-                
-                
-            }
-            else {
-                valider [i++] = true; 
-                pHand.remove(card);
-                validColor = card.getColor();
-                validValue = card.getValue();
-                stockPile.add(card);
-                break;
             }
         }
-        for (int j=0; j<valider.length; j++){
-            if (valider[j]== false){
+        for (int j = 0; j < invalidCards.length; j++){
+            if (invalidCards[j] == false) {
                 ++counterFalse;
             }
         }
-        //System.out.println("counterFalse " + counterFalse);
 
-        if (counterFalse == valider.length) {
+        if (counterFalse == invalidCards.length) {
             submitDraw(playerIds.get(currentPlayer));
+            System.out.println(pid + " pioche une nouvelle carte.");
         }
         currentPlayer = (currentPlayer + 1) % playerIds.size();
-        
     }
 }
