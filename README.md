@@ -9,16 +9,21 @@ Chaque joueur reçoit 7 cartes tirées aléatoirement.
 
 ## Déroulé de la partie
 
-Les joueurs sont répartis dans l'ordre d'arrivée. Chaque joueur pose à son tour une ou plusieurs cartes. S'il pose une carte, il s'agit d'une association simple. S'il en pose deux, il s'agit d'une association double. 
+Les joueurs sont répartis dans l'ordre d'arrivée. Chaque joueur pose à son tour une ou plusieurs cartes. S'il pose une carte, il s'agit d'une association simple. S'il en pose deux, il s'agit d'une association double. L'association identique permet de poser plusieurs cartes de la même couleur et même valeur.
 
 ### Association simple
 
-* Faire correspondre les nombres de mêmes valeurs. (Exemple : 7 avec 7)
-* Faire correspondre deux cartes de la même couleur.
+* Faire correspondre les nombres de mêmes valeurs. (Exemple : 7 avec 7.)
 
 ### Association double
 
 * Associer deux cartes de même couleur pour que leur somme corresponde au numéro et couleur de la carte posée. (Exemple :  Un 10 vert est sur la table. Vous pouvez poser un 9 vert et un 1 vert.)
+
+### Association identique
+
+* Faire correspondre plusieurs cartes de la même valeur et de la même couleur.
+(Exemple : Un 10 rouge est sur la table. Vous pouvez poser deux ou trois 10 de la même couleur.)
+
 
 ### Cartes spéciales
 

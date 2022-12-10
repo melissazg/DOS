@@ -21,23 +21,29 @@ public class Card {
     }
 
     public enum Value {
-        ONE,
-        THREE,
-        FOUR,
-        FIVE,
-        SIX,
-        SEVEN,
-        EIGHT,
-        NINE,
-        TEN,
-        WILD,
-        WILD_TWO;
+        ONE(1),
+        THREE(3),
+        FOUR(4),
+        FIVE(5),
+        SIX(6),
+        SEVEN(7),
+        EIGHT(8),
+        NINE(9),
+        TEN(10),
+        WILD(0),
+        WILD_TWO(2);
 
         private static final Value[] values = Value.values();
 
         public static Value getValue(int i) {
             return Value.values[i];
-        } 
+        }
+
+        final int rank;
+
+        Value(int value) {
+            this.rank = value;
+        }
     }
 
     private final Color color;
