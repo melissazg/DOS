@@ -2,7 +2,6 @@ package com.dos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Game {
@@ -12,16 +11,21 @@ public class Game {
 
     private Deck deck;
     private ArrayList<ArrayList<Card>> playerHand;
-    private ArrayList<Card> stockPile;
+    private ArrayList<Card> stockPile1;
+    private ArrayList<Card> stockPile2;
 
-    private Card.Color validColor;
-    private Card.Value validValue;
+
+    private Card.Color validColor1;
+    private Card.Value validValue1;
+    private Card.Color validColor2;
+    private Card.Value validValue2;
     
     public Game(List<String> pids) {
         this.deck = new Deck();
         deck.reset();
         deck.shuffle();
-        this.stockPile = new ArrayList<Card>();
+        this.stockPile1 = new ArrayList<Card>();
+        this.stockPile2 = new ArrayList<Card>();
 
         this.playerIds = pids;
         this.currentPlayer = 0;
@@ -35,22 +39,27 @@ public class Game {
     }
 
     public void start(Game game) {
-        Card card = deck.drawCard();
-        validColor = card.getColor();
-        validValue = card.getValue();
+        Card card1 = deck.drawCard();
+        validColor1 = card1.getColor();
+        validValue1 = card1.getValue();
 
-        if (card.getValue() == Card.Value.WILD_TWO) {
+        Card card2 = deck.drawCard();
+        validColor2 = card2.getColor();
+        validValue2 = card2.getValue();
+
+        if (card1.getValue() == Card.Value.WILD_TWO || card2.getValue() == Card.Value.WILD_TWO) {
             start(game);
         }
-        stockPile.add(card);
+        stockPile1.add(card1);
+        stockPile2.add(card2);
     }
     
-    public ArrayList<Card> getStockPile() {
-        return stockPile;
+    public ArrayList<Card> getStockPile1() {
+        return stockPile1;
     }
 
-    public Card getTopCard() {
-        return new Card(validColor, validValue);
+    public ArrayList<Card> getStockPile2() {
+        return stockPile2;
     }
 
     /**
@@ -91,8 +100,12 @@ public class Game {
         return getPlayerHand(pid).isEmpty();
     }
 
-    public boolean validCardPlay(Card card) {
-        return card.getColor() == validColor || card.getValue() == validValue;
+    public boolean validCardPlay1(Card card) {
+        return card.getColor() == validColor1 || card.getValue() == validValue1;
+    }
+
+    public boolean validCardPlay2(Card card) {
+        return card.getColor() == validColor2 || card.getValue() == validValue2;
     }
 
     /**
@@ -101,15 +114,15 @@ public class Game {
 
     public void submitDraw(String pid) {
         if (deck.isEmpty()) {
-            deck.replaceDeckWith(stockPile);
+            deck.replaceDeckWith(stockPile1);
             deck.shuffle();
         }
         getPlayerHand(pid).add(deck.drawCard());
     }
 
-    public void setCardColor(Card.Color color) {
+    /*public void setCardColor(Card.Color color) {
         validColor = color;
-    }
+    }*/
 
     public void yellDos(String pid) {
         if (getPlayerHand(pid).size() == 1) {
@@ -126,78 +139,102 @@ public class Game {
         int counterFalse = 0;
         int i = 0; 
 
+        boolean hasPlayed = false;
+
+        // compteur de toutes les couleurs dispo dans la main
+        int red = 0;
+        int yellow = 0;
+        int blue = 0;
+        int green = 0;
+        int wild = 0;
+
         for (Card card : pHand) {
 
-            if (validCardPlay(card)) {
+            if (card.getColor() == Card.Color.RED) {
+                red++;
+            }
+            else if (card.getColor() == Card.Color.YELLOW) {
+                yellow++;
+            }
+            else if (card.getColor() == Card.Color.BLUE) {
+                blue++;
+            }
+            else if (card.getColor() == Card.Color.GREEN) {
+                green++;
+            }
+            else if (card.getColor() == Card.Color.WILD) {
+                wild++;
+            }
 
+            if (validCardPlay1(card)) {
+                hasPlayed = true;
                 invalidCards[i++] = true; 
 
-                validColor = card.getColor();
-                validValue = card.getValue();
+                validColor1 = card.getColor();
+                validValue1 = card.getValue();
 
                 yellDos(pid);
                 pHand.remove(card);
-                stockPile.add(card);
+                stockPile1.add(card);
                 System.out.println(pid + " joue la carte " + card + ".");
                 break;
             }
-            else {
-                if (card.getColor() == Card.Color.WILD) {
+            if (validCardPlay2(card)) {
+                hasPlayed = true;
+                invalidCards[i++] = true; 
 
-                    invalidCards[i++] = true; 
+                validColor2 = card.getColor();
+                validValue2 = card.getValue();
 
-                    int red = 0;
-                    int yellow = 0;
-                    int blue = 0;
-                    int green = 0;
-    
-                    if (card.getColor() == Card.Color.RED) {
-                        red++;
-                    }
-                    else if (card.getColor() == Card.Color.YELLOW) {
-                        yellow++;
-                    }
-                    else if (card.getColor() == Card.Color.BLUE) {
-                        blue++;
-                    }
-                    else if (card.getColor() == Card.Color.GREEN) {
-                        green++;
-                    }
+                yellDos(pid);
+                pHand.remove(card);
+                stockPile2.add(card);
+                System.out.println(pid + " joue la carte " + card + ".");
+                break;
+            }
+        }
 
-                    int[] t = {red, yellow, blue, green};
+        int[] t = {red, yellow, blue, green, wild};
 
-                    int indCouleurMax = 0;
-                    int max = t[0];
-                    for (int k = 1; k < t.length ; k++) {
-                        if (max < t[k]) {
-                            max = t[k];
-                            indCouleurMax = k;
-                        }
-                    }
-                    Card.Color laCouleurMax = Card.Color.WILD;
-                    if (indCouleurMax == 0) {
-                        laCouleurMax = Card.Color.RED;
-                    }
-                    else if (indCouleurMax == 1) {
-                        laCouleurMax = Card.Color.YELLOW;
-                    }
-                    else if (indCouleurMax == 2) {
-                        laCouleurMax = Card.Color.BLUE;
-                    }
-                    else if (indCouleurMax == 3) {
-                        laCouleurMax = Card.Color.GREEN;
-                    }
+        if (t[wild] != 0 && !hasPlayed) {
 
-                    validColor = laCouleurMax;
-                    validValue = card.getValue();
+            invalidCards[i++] = true; 
+
+            int indCouleurMax = 0;
+            int max = t[0];
+            for (int k = 1; k < t.length - 1; k++) {
+                if (max < t[k]) {
+                    max = t[k];
+                    indCouleurMax = k;
+                }
+            }
+            Card.Color laCouleurMax = Card.Color.WILD;
+            if (indCouleurMax == 0) {
+                laCouleurMax = Card.Color.RED;
+            }
+            else if (indCouleurMax == 1) {
+                laCouleurMax = Card.Color.YELLOW;
+            }
+            else if (indCouleurMax == 2) {
+                laCouleurMax = Card.Color.BLUE;
+            }
+            else if (indCouleurMax == 3) {
+                laCouleurMax = Card.Color.GREEN;
+            }
+
+            validColor1 = laCouleurMax;
+
+            for (Card card : pHand) {
+                if (card.getValue() == Card.Value.WILD_TWO) {
                     pHand.remove(card);
                     yellDos(pid);
-                    stockPile.add(card);
-                    System.out.println(pid + " joue la carte " + card.toString() + ".");
+                    stockPile1.add(card);
+                    System.out.println(pid + " joue la carte " + card + " et demande la couleur " + validColor1 + ".");
                     break;
                 }
             }
         }
+
         for (int j = 0; j < invalidCards.length; j++){
             if (invalidCards[j] == false) {
                 ++counterFalse;
