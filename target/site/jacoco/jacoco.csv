@@ -2,6 +2,6 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 dos,com.dos,Deck,50,303,3,17,6,38,4,13,1,6
 dos,com.dos,Card.Color,4,56,0,0,1,6,1,1,1,1
 dos,com.dos,Card.Value,9,166,0,2,2,20,2,4,2,3
-dos,com.dos,Game,886,134,121,7,152,25,70,9,7,8
+dos,com.dos,Game,1012,134,131,7,172,25,74,9,6,8
 dos,com.dos,Card,24,28,6,0,4,7,4,4,1,4
 dos,com.dos,Main,222,0,14,0,30,0,9,0,2,0
