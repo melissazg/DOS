@@ -33,10 +33,10 @@ public class Main {
                 System.out.println("Main de " + game.getPlayers().get(j) +  " : " + game.getPlayerHand(game.getPlayers().get(j)).toString());
             }
 
-            System.out.println("\nStockPile1 : " + game.getStockPile1() + "\n");
-            System.out.println("\nStockPile2 : " + game.getStockPile2() + "\n");
+            for (int j = 0; j < 2; j++) {
+                System.out.println("\nStockPile " + (j + 1) + " : " + game.getStockPile().get(j));
+            }
 
-            
             String firstPlayerInRound = players.poll();
             players.offer(firstPlayerInRound);
 
@@ -48,8 +48,9 @@ public class Main {
                 for (int j = 0; j < PLAYER_COUNT; j++) {
                     System.out.println("Main de " + game.getPlayers().get(j) +  " : " + game.getPlayerHand(game.getPlayers().get(j)).toString());
                 }
-                System.out.println("StockPile1 : " + game.getStockPile1());
-                System.out.println("StockPile2 : " + game.getStockPile2());
+                for (int j = 0; j < 2; j++) {
+                    System.out.println("\nStockPile " + (j + 1) + " : " + game.getStockPile().get(j));
+                }
 
                 System.out.println("\n" + firstPlayerInRound + " a gagné en " + round + " tours.\n");
                 firstPlayerInRound = players.poll();

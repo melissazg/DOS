@@ -65,4 +65,12 @@ public class Card {
     public String toString() {
         return color + "_" + value;
     }
+    @Override
+    public boolean equals(Object other){
+        if(other instanceof Card){
+            Card card = (Card)other;
+            return this.color.equals(card.getColor()) && this.value.equals(card.getValue());
+        }
+        return false;
+    }
 }
