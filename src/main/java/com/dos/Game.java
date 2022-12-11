@@ -38,12 +38,6 @@ public class Game {
         for (int i = 0; i < pids.size(); i++) {
 
             ArrayList<Card> hand = new ArrayList<Card>(Arrays.asList(deck.drawCard(7)));
-            /*ArrayList<Card> hand = new ArrayList<Card>();
-            Card card = new Card(Card.Color.RED, Card.Value.ONE);
-            Card card2 = new Card(Card.Color.RED, Card.Value.THREE);
-            hand.add(card);
-            hand.add(card2);
-            hand.add(card);*/
             this.playerHand.add(hand);
         }
     }

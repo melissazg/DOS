@@ -66,7 +66,7 @@ public class Game {
 <span class="nc" id="L66">    }</span>
     
     public ArrayList&lt;ArrayList&lt;Card&gt;&gt; getStockPile() {
-<span class="nc" id="L69">        return stockPile;</span>
+<span class="fc" id="L69">        return stockPile;</span>
     }
 
     /**
@@ -102,9 +102,9 @@ public class Game {
 <span class="fc" id="L102">        return getPlayerHand(pid).isEmpty();</span>
     }
 
-    public boolean validCardPlay(Card card) {
+    public boolean validCardPlay(Card card, Card.Color [] validColor, Card.Value [] validValue) {
 <span class="pc bpc" id="L106" title="2 of 4 branches missed.">        return (card.getColor() == validColor[0] || card.getValue() == validValue[0]) </span>
-<span class="pc bpc" id="L107" title="2 of 4 branches missed.">        || (card.getColor() == validColor[1] || card.getValue() == validValue[1]);</span>
+<span class="pc bpc" id="L107" title="3 of 4 branches missed.">        || (card.getColor() == validColor[1] || card.getValue() == validValue[1]);</span>
     }
 
     /**
@@ -127,37 +127,37 @@ public class Game {
         }
 <span class="nc" id="L128">    }</span>
 
-    /*
-    public int sumCardValue(String pid){
-        ArrayList&lt;Card&gt; pHand = getPlayerHand(pid);
-        int 
+    public boolean hasThreeIdenticalCards(ArrayList&lt;Card&gt; pHand, Card.Value [] validValue) {
+<span class="fc" id="L131">        int countValueStockPile = 1;</span>
 
-        for (int i = 0; i &lt; pHand.size(); i++) {
-            if (pHand.get(i).getColor() == validColor1) {
-                for (int j = i + 1; j &lt; pHand.size(); j++) {
-                    if (pHand.get(j).getColor() == validColor1) {
-                        
-                        if ()) {
-
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        for (int i = 0; i &lt; pHand.size(); i++) {</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">            for (int j = 0; j &lt; 2; j++) {</span>
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">                if (pHand.get(i).getValue() == validValue[j] &amp;&amp; pHand.get(i).getValue() != Card.Value.WILD_TWO) {</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">                    for (int k = i + 1; k &lt; pHand.size(); k++) {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                        if (pHand.get(k).equals(pHand.get(i))) {</span>
+<span class="fc" id="L138">                            countValueStockPile++;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">                            if (countValueStockPile == 3) {</span>
+<span class="fc" id="L140">                                return true;</span>
+                            }
+                        }
                     }
                 }
             }
         }
+<span class="nc" id="L147">        return false;</span>
     }
-    */
 
-    public boolean hasThreeIdenticalCards(String pid){
-<span class="nc" id="L150">        ArrayList&lt;Card&gt; pHand = getPlayerHand(pid);</span>
-<span class="nc" id="L151">        int countValueStockPile = 1;</span>
+    public boolean hasTwoIdenticalCards(ArrayList&lt;Card&gt; pHand, Card.Value [] validValue) {
+<span class="fc" id="L151">        int countValueStockPile = 1;</span>
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        for (int i = 0; i &lt; pHand.size(); i++) {</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">            for (int j = 0; j &lt; 2; j++) {</span>
-<span class="nc bnc" id="L155" title="All 4 branches missed.">                if (pHand.get(i).getValue() == validValue[j] &amp;&amp; pHand.get(i).getValue() != Card.Value.WILD_TWO) {</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">                    for (int k = i + 1; k &lt; pHand.size(); k++) {</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">                        if (pHand.get(k).equals(pHand.get(i))) {</span>
-<span class="nc" id="L158">                            countValueStockPile++;</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">                            if (countValueStockPile == 3) {</span>
-<span class="nc" id="L160">                                return true;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        for (int i = 0; i &lt; pHand.size(); i++) {</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">            for (int j = 0; j &lt; 2; j++) {</span>
+<span class="pc bpc" id="L155" title="2 of 4 branches missed.">                if (pHand.get(i).getValue() == validValue[j] &amp;&amp; pHand.get(i).getValue() != Card.Value.WILD_TWO) {</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">                    for (int k = i + 1; k &lt; pHand.size(); k++) {</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">                        if (pHand.get(k).equals(pHand.get(i))) {</span>
+<span class="fc" id="L158">                            countValueStockPile++;</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                            if (countValueStockPile == 2) {</span>
+<span class="fc" id="L160">                                return true;</span>
                             }
                         }
                     }
@@ -167,229 +167,207 @@ public class Game {
 <span class="nc" id="L167">        return false;</span>
     }
 
-    public boolean hasTwoIdenticalCards(String pid){
-<span class="nc" id="L171">        ArrayList&lt;Card&gt; pHand = getPlayerHand(pid);</span>
-<span class="nc" id="L172">        int countValueStockPile = 1;</span>
-
-<span class="nc bnc" id="L174" title="All 2 branches missed.">        for (int i = 0; i &lt; pHand.size(); i++) {</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">            for (int j = 0; j &lt; 2; j++) {</span>
-<span class="nc bnc" id="L176" title="All 4 branches missed.">                if (pHand.get(i).getValue() == validValue[j] &amp;&amp; pHand.get(i).getValue() != Card.Value.WILD_TWO) {</span>
-<span class="nc bnc" id="L177" title="All 2 branches missed.">                    for (int k = i + 1; k &lt; pHand.size(); k++) {</span>
-<span class="nc bnc" id="L178" title="All 2 branches missed.">                        if (pHand.get(k).equals(pHand.get(i))) {</span>
-<span class="nc" id="L179">                            countValueStockPile++;</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">                            if (countValueStockPile == 2) {</span>
-<span class="nc" id="L181">                                return true;</span>
-                            }
-                        }
-                    }
-                }
-            }
-        }
-<span class="nc" id="L188">        return false;</span>
-    }
-
     /**
      * @param pid
      */
 
     public void submitPlayerCard(String pid) {
 
-<span class="nc" id="L197">        ArrayList&lt;Card&gt; pHand = getPlayerHand(pid);</span>
+<span class="nc" id="L176">        ArrayList&lt;Card&gt; pHand = getPlayerHand(pid);</span>
   
         // si toutes les cartes de la main du joueur ne sont pas valides (tout le tableau contient des false), il piochera
-<span class="nc" id="L200">        boolean [] validCards = new boolean [getPlayerHandSize(getCurrentPlayer())];</span>
-<span class="nc" id="L201">        int counterFalse = 0;</span>
-<span class="nc" id="L202">        int indexValidCards = 0; </span>
+<span class="nc" id="L179">        boolean [] validCards = new boolean [getPlayerHandSize(getCurrentPlayer())];</span>
+<span class="nc" id="L180">        int counterFalse = 0;</span>
+<span class="nc" id="L181">        int indexValidCards = 0; </span>
 
-<span class="nc" id="L204">        boolean hasPlayed = false;</span>
+<span class="nc" id="L183">        boolean hasPlayed = false;</span>
 
         // compteur de toutes les couleurs dispo dans la main
-<span class="nc" id="L207">        int blue = 0;</span>
-<span class="nc" id="L208">        int red = 0;</span>
-<span class="nc" id="L209">        int green = 0;</span>
-<span class="nc" id="L210">        int yellow = 0;</span>
-<span class="nc" id="L211">        int wild = 0;</span>
-<span class="nc" id="L212">        int[] t = {blue, red, green, yellow, wild};</span>
+<span class="nc" id="L186">        int blue = 0;</span>
+<span class="nc" id="L187">        int red = 0;</span>
+<span class="nc" id="L188">        int green = 0;</span>
+<span class="nc" id="L189">        int yellow = 0;</span>
+<span class="nc" id="L190">        int wild = 0;</span>
+<span class="nc" id="L191">        int[] t = {blue, red, green, yellow, wild};</span>
 
-<span class="nc" id="L214">        Card.Color[] colors = Card.Color.values();</span>
+<span class="nc" id="L193">        Card.Color[] colors = Card.Color.values();</span>
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">        for (Card card : pHand) {</span>
-<span class="nc bnc" id="L217" title="All 2 branches missed.">            for (int i = 0; i &lt; colors.length; i++) {   </span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">                if (card.getColor() == colors[i]) {</span>
-<span class="nc" id="L219">                    t[i]++;</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        for (Card card : pHand) {</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            for (int i = 0; i &lt; colors.length; i++) {   </span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                if (card.getColor() == colors[i]) {</span>
+<span class="nc" id="L198">                    t[i]++;</span>
                 }
             }
         }
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (hasThreeIdenticalCards(pid)) {</span>
-<span class="nc" id="L225">            validCards[indexValidCards++] = true; </span>
-<span class="nc" id="L226">            System.out.println(&quot;possède 3 identiques&quot;);</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (hasThreeIdenticalCards(pHand, validValue)) {</span>
+<span class="nc" id="L204">            validCards[indexValidCards++] = true; </span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">            for (int z = 0; z &lt; pHand.size(); z++) {</span>
-<span class="nc bnc" id="L229" title="All 2 branches missed.">                for (int i = 0; i &lt; 2; i++) {</span>
-<span class="nc bnc" id="L230" title="All 2 branches missed.">                    if (pHand.get(z).getValue() == validValue[i]) {</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">            for (int z = 0; z &lt; pHand.size(); z++) {</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                for (int i = 0; i &lt; 2; i++) {</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">                    if (pHand.get(z).getValue() == validValue[i]) {</span>
 
-<span class="nc bnc" id="L232" title="All 2 branches missed.">                        for (int y = z + 1; y &lt; pHand.size(); y++) {</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">                            if (pHand.get(y).equals(pHand.get(z))) {</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                        for (int y = z + 1; y &lt; pHand.size(); y++) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                            if (pHand.get(y).equals(pHand.get(z))) {</span>
                                
-<span class="nc bnc" id="L235" title="All 2 branches missed.">                                for (int x = y + 1; x &lt; pHand.size(); x++) {</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">                                    if (pHand.get(x).equals(pHand.get(z))){</span>
-<span class="nc" id="L237">                                        validColor[i] = pHand.get(z).getColor();</span>
-<span class="nc" id="L238">                                        Card[] removeCards = {pHand.get(z), pHand.get(y), pHand.get(x)};</span>
-<span class="nc" id="L239">                                        System.out.println(&quot;\n&quot; + pid + &quot; joue trois cartes &quot; + pHand.get(z) + &quot; dans la stockPile &quot; + (i + 1) + &quot;. \n&quot;);</span>
-<span class="nc bnc" id="L240" title="All 2 branches missed.">                                        for (int j = 0; j &lt; 3; j++) {</span>
-<span class="nc" id="L241">                                            yellDos(pid);</span>
-<span class="nc" id="L242">                                            pHand.remove(removeCards[j]);</span>
-<span class="nc" id="L243">                                            stockPile.get(i).add(removeCards[j]);</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                                for (int x = y + 1; x &lt; pHand.size(); x++) {</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                                    if (pHand.get(x).equals(pHand.get(z))){</span>
+<span class="nc" id="L215">                                        validColor[i] = pHand.get(z).getColor();</span>
+<span class="nc" id="L216">                                        Card[] removeCards = {pHand.get(z), pHand.get(y), pHand.get(x)};</span>
+<span class="nc" id="L217">                                        System.out.println(&quot;\n&quot; + pid + &quot; joue trois cartes &quot; + pHand.get(z) + &quot; dans la stockPile &quot; + (i + 1) + &quot;. \n&quot;);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">                                        for (int j = 0; j &lt; 3; j++) {</span>
+<span class="nc" id="L219">                                            yellDos(pid);</span>
+<span class="nc" id="L220">                                            pHand.remove(removeCards[j]);</span>
+<span class="nc" id="L221">                                            stockPile.get(i).add(removeCards[j]);</span>
                                         }
-<span class="nc" id="L245">                                        hasPlayed = true;</span>
-<span class="nc" id="L246">                                        break;</span>
+<span class="nc" id="L223">                                        hasPlayed = true;</span>
+<span class="nc" id="L224">                                        break;</span>
                                     }
                                 }
-<span class="nc" id="L249">                            break;</span>
+<span class="nc" id="L227">                            break;</span>
                             }
                         }
-<span class="nc" id="L252">                    break;</span>
+<span class="nc" id="L230">                    break;</span>
                     }
                 }
             }
-<span class="nc" id="L256">        }</span>
+<span class="nc" id="L234">        }</span>
 
-<span class="nc bnc" id="L258" title="All 4 branches missed.">        else if (hasTwoIdenticalCards(pid) &amp;&amp; hasPlayed == false) {</span>
-<span class="nc" id="L259">            validCards[indexValidCards++] = true; </span>
+<span class="nc bnc" id="L236" title="All 4 branches missed.">        else if (hasTwoIdenticalCards(pHand, validValue) &amp;&amp; hasPlayed == false) {</span>
+<span class="nc" id="L237">            validCards[indexValidCards++] = true; </span>
             
-<span class="nc bnc" id="L261" title="All 2 branches missed.">            for (int z = 0; z &lt; pHand.size(); z++) {</span>
-<span class="nc bnc" id="L262" title="All 2 branches missed.">                for (int i = 0; i &lt; 2; i++) {</span>
-<span class="nc bnc" id="L263" title="All 2 branches missed.">                    if (pHand.get(z).getValue() == validValue[i]) {</span>
-<span class="nc bnc" id="L264" title="All 2 branches missed.">                        for (int y = z + 1; y &lt; pHand.size(); y++) {</span>
-<span class="nc bnc" id="L265" title="All 2 branches missed.">                            if (pHand.get(y).equals(pHand.get(z))) {</span>
-<span class="nc" id="L266">                                validColor[i] = pHand.get(z).getColor();</span>
-<span class="nc" id="L267">                                Card[] removeCards = {pHand.get(z), pHand.get(y)};</span>
-<span class="nc" id="L268">                                System.out.println(&quot;\n&quot; + pid + &quot; joue deux cartes &quot; + pHand.get(z)  + &quot; dans la stockPile &quot; + (i + 1) + &quot;.&quot;);</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            for (int z = 0; z &lt; pHand.size(); z++) {</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                for (int i = 0; i &lt; 2; i++) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                    if (pHand.get(z).getValue() == validValue[i]) {</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">                        for (int y = z + 1; y &lt; pHand.size(); y++) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                            if (pHand.get(y).equals(pHand.get(z))) {</span>
+<span class="nc" id="L244">                                validColor[i] = pHand.get(z).getColor();</span>
+<span class="nc" id="L245">                                Card[] removeCards = {pHand.get(z), pHand.get(y)};</span>
+<span class="nc" id="L246">                                System.out.println(&quot;\n&quot; + pid + &quot; joue deux cartes &quot; + pHand.get(z)  + &quot; dans la stockPile &quot; + (i + 1) + &quot;.&quot;);</span>
 
-<span class="nc bnc" id="L270" title="All 2 branches missed.">                                for (int j = 0; j &lt; 2; j++) {</span>
-<span class="nc" id="L271">                                    yellDos(pid);</span>
-<span class="nc" id="L272">                                    pHand.remove(removeCards[j]);</span>
-<span class="nc" id="L273">                                    stockPile.get(i).add(removeCards[j]);</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">                                for (int j = 0; j &lt; 2; j++) {</span>
+<span class="nc" id="L249">                                    yellDos(pid);</span>
+<span class="nc" id="L250">                                    pHand.remove(removeCards[j]);</span>
+<span class="nc" id="L251">                                    stockPile.get(i).add(removeCards[j]);</span>
                                 }
-<span class="nc" id="L275">                                hasPlayed = true;</span>
-<span class="nc" id="L276">                                break;</span>
+<span class="nc" id="L253">                                hasPlayed = true;</span>
+<span class="nc" id="L254">                                break;</span>
                             }
                         }
-<span class="nc" id="L279">                        break;</span>
+<span class="nc" id="L257">                        break;</span>
                     }
                 }
             }
         }
 
-<span class="nc bnc" id="L285" title="All 2 branches missed.">        for (Card card : pHand) {</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        for (Card card : pHand) {</span>
             /* somme 2 cartes de la même couleur que stockpile */
-<span class="nc bnc" id="L287" title="All 2 branches missed.">            for (int i = 0; i &lt; 2; i++) {</span>
-<span class="nc bnc" id="L288" title="All 2 branches missed.">                if (card.getColor() == validColor[i]) {</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            for (int i = 0; i &lt; 2; i++) {</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">                if (card.getColor() == validColor[i]) {</span>
 
-<span class="nc" id="L290">                    Value value = card.getValue();</span>
-<span class="nc" id="L291">                    int valueInt = value.getValue1();</span>
-<span class="nc" id="L292">                    int validValue1Int = validValue[i].getValue1();</span>
-<span class="nc" id="L293">                    int z = pHand.indexOf(card);</span>
+<span class="nc" id="L268">                    Value value = card.getValue();</span>
+<span class="nc" id="L269">                    int valueInt = value.getValue1();</span>
+<span class="nc" id="L270">                    int validValue1Int = validValue[i].getValue1();</span>
+<span class="nc" id="L271">                    int z = pHand.indexOf(card);</span>
 
-<span class="nc bnc" id="L295" title="All 2 branches missed.">                    for (int h = z + 1; h &lt; pHand.size(); h++) {</span>
-<span class="nc" id="L296">                        Value value2 = pHand.get(h).getValue();</span>
-<span class="nc" id="L297">                        int valueInt2 = value2.getValue1();</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">                    for (int h = z + 1; h &lt; pHand.size(); h++) {</span>
+<span class="nc" id="L274">                        Value value2 = pHand.get(h).getValue();</span>
+<span class="nc" id="L275">                        int valueInt2 = value2.getValue1();</span>
 
-<span class="nc bnc" id="L299" title="All 4 branches missed.">                        if (pHand.get(h).getColor() == validColor[i] &amp;&amp; valueInt + valueInt2 == validValue1Int) {</span>
-<span class="nc" id="L300">                            hasPlayed = true;</span>
-<span class="nc" id="L301">                            validCards[indexValidCards++] = true;</span>
-<span class="nc" id="L302">                            yellDos(pid);</span>
+<span class="nc bnc" id="L277" title="All 4 branches missed.">                        if (pHand.get(h).getColor() == validColor[i] &amp;&amp; valueInt + valueInt2 == validValue1Int) {</span>
+<span class="nc" id="L278">                            hasPlayed = true;</span>
+<span class="nc" id="L279">                            validCards[indexValidCards++] = true;</span>
+<span class="nc" id="L280">                            yellDos(pid);</span>
 
-<span class="nc" id="L304">                            Card myCard = pHand.get(h);</span>
-<span class="nc" id="L305">                            stockPile.get(i).add(pHand.get(h));</span>
+<span class="nc" id="L282">                            Card myCard = pHand.get(h);</span>
+<span class="nc" id="L283">                            stockPile.get(i).add(pHand.get(h));</span>
 
-<span class="nc" id="L307">                            pHand.remove(pHand.get(h - 1));</span>
+<span class="nc" id="L285">                            pHand.remove(pHand.get(h - 1));</span>
 
-<span class="nc" id="L309">                            pHand.remove(card);</span>
+<span class="nc" id="L287">                            pHand.remove(card);</span>
 
-<span class="nc" id="L311">                            stockPile.get(i).add(card);</span>
+<span class="nc" id="L289">                            stockPile.get(i).add(card);</span>
 
-<span class="nc" id="L313">                            System.out.println(&quot;\n&quot; + pid + &quot; joue les cartes &quot; + myCard + &quot; et &quot; + card + &quot; dans la stockPile &quot; + (i + 1) + &quot;.&quot;);</span>
-<span class="nc" id="L314">                            break;</span>
+<span class="nc" id="L291">                            System.out.println(&quot;\n&quot; + pid + &quot; joue les cartes &quot; + myCard + &quot; et &quot; + card + &quot; dans la stockPile &quot; + (i + 1) + &quot;.&quot;);</span>
+<span class="nc" id="L292">                            break;</span>
                         }
                     }
-<span class="nc" id="L317">                break;</span>
+<span class="nc" id="L295">                break;</span>
                 }
             }
-<span class="nc bnc" id="L320" title="All 2 branches missed.">            if (hasPlayed){</span>
-<span class="nc" id="L321">                break;</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">            if (hasPlayed){</span>
+<span class="nc" id="L299">                break;</span>
             }
-<span class="nc bnc" id="L323" title="All 2 branches missed.">            else if (validCardPlay(card)) {</span>
-<span class="nc" id="L324">                hasPlayed = true;</span>
-<span class="nc" id="L325">                validCards[indexValidCards++] = true; </span>
-<span class="nc bnc" id="L326" title="All 2 branches missed.">                for (int i = 0; i &lt; 2; i++) {</span>
-<span class="nc bnc" id="L327" title="All 4 branches missed.">                    if (card.getColor() == validColor[i] || card.getValue() == validValue[i]) {</span>
-<span class="nc" id="L328">                        validColor[i] = card.getColor();</span>
-<span class="nc" id="L329">                        validValue[i] = card.getValue();</span>
-<span class="nc" id="L330">                        System.out.println();</span>
-<span class="nc" id="L331">                        yellDos(pid);</span>
-<span class="nc" id="L332">                        pHand.remove(card);</span>
-<span class="nc" id="L333">                        stockPile.get(i).add(card);</span>
-<span class="nc" id="L334">                        System.out.println(pid + &quot; joue la carte &quot; + card + &quot; dans la stockPile &quot; + (i + 1) + &quot;.&quot;);</span>
-<span class="nc" id="L335">                        break;</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">            else if (validCardPlay(card, validColor, validValue)) {</span>
+<span class="nc" id="L302">                hasPlayed = true;</span>
+<span class="nc" id="L303">                validCards[indexValidCards++] = true; </span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">                for (int i = 0; i &lt; 2; i++) {</span>
+<span class="nc bnc" id="L305" title="All 4 branches missed.">                    if (card.getColor() == validColor[i] || card.getValue() == validValue[i]) {</span>
+<span class="nc" id="L306">                        validColor[i] = card.getColor();</span>
+<span class="nc" id="L307">                        validValue[i] = card.getValue();</span>
+<span class="nc" id="L308">                        System.out.println();</span>
+<span class="nc" id="L309">                        yellDos(pid);</span>
+<span class="nc" id="L310">                        pHand.remove(card);</span>
+<span class="nc" id="L311">                        stockPile.get(i).add(card);</span>
+<span class="nc" id="L312">                        System.out.println(pid + &quot; joue la carte &quot; + card + &quot; dans la stockPile &quot; + (i + 1) + &quot;.&quot;);</span>
+<span class="nc" id="L313">                        break;</span>
                     }
                 }
-<span class="nc" id="L338">            break;</span>
+<span class="nc" id="L316">            break;</span>
             }
         }
 
-<span class="nc bnc" id="L342" title="All 4 branches missed.">        if (t[wild] &gt; 0 &amp;&amp; hasPlayed == false) {</span>
+<span class="nc bnc" id="L320" title="All 4 branches missed.">        if (t[wild] &gt; 0 &amp;&amp; hasPlayed == false) {</span>
 
-<span class="nc" id="L344">            validCards[indexValidCards++] = true; </span>
+<span class="nc" id="L322">            validCards[indexValidCards++] = true; </span>
 
-<span class="nc" id="L346">            int indCouleurMax = 0;</span>
-<span class="nc" id="L347">            int max = t[0];</span>
-<span class="nc bnc" id="L348" title="All 2 branches missed.">            for (int k = 1; k &lt; t.length - 1; k++) {</span>
-<span class="nc bnc" id="L349" title="All 2 branches missed.">                if (max &lt; t[k]) {</span>
-<span class="nc" id="L350">                    max = t[k];</span>
-<span class="nc" id="L351">                    indCouleurMax = k;</span>
+<span class="nc" id="L324">            int indCouleurMax = 0;</span>
+<span class="nc" id="L325">            int max = t[0];</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">            for (int k = 1; k &lt; t.length - 1; k++) {</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">                if (max &lt; t[k]) {</span>
+<span class="nc" id="L328">                    max = t[k];</span>
+<span class="nc" id="L329">                    indCouleurMax = k;</span>
                 }
             }
-<span class="nc" id="L354">            Card.Color laCouleurMax = Card.Color.WILD;</span>
-<span class="nc bnc" id="L355" title="All 2 branches missed.">            if (indCouleurMax == 0) {</span>
-<span class="nc" id="L356">                laCouleurMax = Card.Color.BLUE;</span>
-<span class="nc" id="L357">            }</span>
-<span class="nc bnc" id="L358" title="All 2 branches missed.">            else if (indCouleurMax == 1) {</span>
-<span class="nc" id="L359">                laCouleurMax = Card.Color.RED;</span>
-<span class="nc" id="L360">            }</span>
-<span class="nc bnc" id="L361" title="All 2 branches missed.">            else if (indCouleurMax == 2) {</span>
-<span class="nc" id="L362">                laCouleurMax = Card.Color.GREEN;</span>
-<span class="nc" id="L363">            }</span>
-<span class="nc bnc" id="L364" title="All 2 branches missed.">            else if (indCouleurMax == 3) {</span>
-<span class="nc" id="L365">                laCouleurMax = Card.Color.YELLOW;</span>
+<span class="nc" id="L332">            Card.Color laCouleurMax = Card.Color.WILD;</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">            if (indCouleurMax == 0) {</span>
+<span class="nc" id="L334">                laCouleurMax = Card.Color.BLUE;</span>
+<span class="nc" id="L335">            }</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">            else if (indCouleurMax == 1) {</span>
+<span class="nc" id="L337">                laCouleurMax = Card.Color.RED;</span>
+<span class="nc" id="L338">            }</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">            else if (indCouleurMax == 2) {</span>
+<span class="nc" id="L340">                laCouleurMax = Card.Color.GREEN;</span>
+<span class="nc" id="L341">            }</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">            else if (indCouleurMax == 3) {</span>
+<span class="nc" id="L343">                laCouleurMax = Card.Color.YELLOW;</span>
             }
 
-<span class="nc" id="L368">            validColor[0] = laCouleurMax;</span>
+<span class="nc" id="L346">            validColor[0] = laCouleurMax;</span>
 
-<span class="nc bnc" id="L370" title="All 2 branches missed.">            for (Card card : pHand) {</span>
-<span class="nc bnc" id="L371" title="All 2 branches missed.">                if (card.getValue() == Card.Value.WILD_TWO) {</span>
-<span class="nc" id="L372">                    System.out.println();</span>
-<span class="nc" id="L373">                    yellDos(pid);</span>
-<span class="nc" id="L374">                    pHand.remove(card);</span>
-<span class="nc" id="L375">                    stockPile.get(0).add(card);</span>
-<span class="nc" id="L376">                    System.out.println(&quot;\n&quot; + pid + &quot; joue la carte &quot; + card + &quot; dans le stockPile 1 et demande la couleur &quot; + laCouleurMax + &quot;.&quot;);</span>
-<span class="nc" id="L377">                    break;</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">            for (Card card : pHand) {</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">                if (card.getValue() == Card.Value.WILD_TWO) {</span>
+<span class="nc" id="L350">                    System.out.println();</span>
+<span class="nc" id="L351">                    yellDos(pid);</span>
+<span class="nc" id="L352">                    pHand.remove(card);</span>
+<span class="nc" id="L353">                    stockPile.get(0).add(card);</span>
+<span class="nc" id="L354">                    System.out.println(pid + &quot; joue la carte &quot; + card + &quot; dans le stockPile 1 et demande la couleur &quot; + laCouleurMax + &quot;.&quot;);</span>
+<span class="nc" id="L355">                    break;</span>
                 }
             }
         }
 
-<span class="nc bnc" id="L382" title="All 2 branches missed.">        for (int j = 0; j &lt; validCards.length; j++){</span>
-<span class="nc bnc" id="L383" title="All 2 branches missed.">            if (validCards[j] == false) {</span>
-<span class="nc" id="L384">                ++counterFalse;</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">        for (int j = 0; j &lt; validCards.length; j++){</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">            if (validCards[j] == false) {</span>
+<span class="nc" id="L362">                ++counterFalse;</span>
             }
         }
 
-<span class="nc bnc" id="L388" title="All 2 branches missed.">        if (counterFalse == validCards.length) {</span>
-<span class="nc" id="L389">            submitDraw(playerIds.get(currentPlayer));</span>
-<span class="nc" id="L390">            System.out.println(&quot;\n&quot; + pid + &quot; pioche une nouvelle carte.&quot;);</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">        if (counterFalse == validCards.length) {</span>
+<span class="nc" id="L367">            submitDraw(playerIds.get(currentPlayer));</span>
+<span class="nc" id="L368">            System.out.println(&quot;\n&quot; + pid + &quot; pioche une nouvelle carte.&quot;);</span>
         }
-<span class="nc" id="L392">        currentPlayer = (currentPlayer + 1) % playerIds.size();</span>
-<span class="nc" id="L393">    }</span>
+<span class="nc" id="L370">        currentPlayer = (currentPlayer + 1) % playerIds.size();</span>
+<span class="nc" id="L371">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

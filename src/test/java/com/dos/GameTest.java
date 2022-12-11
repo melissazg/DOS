@@ -54,18 +54,19 @@ public class GameTest {
     }
 
     @Test
-    void testSetCardColor() {
-        /*Card carte = new Card (Color.RED, Value.FOUR);
-        Game jeu = new Game();
-        jeu.setCardColor(Color.RED);
-        assertEquals(Color.RED, carte.getColor()); */
-
+    void testStart() {
 
     }
 
     @Test
-    void testStart() {
-
+    void testGetStockpile() {
+        List<String> playerIds = new ArrayList<String>();
+        playerIds.add("Dida");
+        playerIds.add("Didou");
+        playerIds.add("Lili");
+        Game game = new Game(playerIds);
+        ArrayList<Card> stockPile = new ArrayList<Card>();
+        assertEquals(stockPile, game.getStockPile());
     }
 
     @Test

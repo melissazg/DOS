@@ -86,9 +86,9 @@ public class Card {
     
     @Override
     public boolean equals(Object other){
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        if(other instanceof Card){</span>
-<span class="nc" id="L90">            Card card = (Card)other;</span>
-<span class="nc bnc" id="L91" title="All 4 branches missed.">            return this.color.equals(card.getColor()) &amp;&amp; this.value.equals(card.getValue());</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if(other instanceof Card){</span>
+<span class="fc" id="L90">            Card card = (Card)other;</span>
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">            return this.color.equals(card.getColor()) &amp;&amp; this.value.equals(card.getValue());</span>
         }
 <span class="nc" id="L93">        return false;</span>
     }
