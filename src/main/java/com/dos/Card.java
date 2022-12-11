@@ -1,5 +1,8 @@
 package com.dos;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * List the possible colors and values of a card
  */
@@ -39,10 +42,25 @@ public class Card {
             return Value.values[i];
         }
 
-        final int rank;
-
-        Value(int value) {
-            this.rank = value;
+        private int value;
+        private static Map map = new HashMap<>();
+    
+        private Value (int value) {
+            this.value = value;
+        }
+    
+        static {
+            for (Value valeur : Value.values()) {
+                map.put(valeur.value, valeur);
+            }
+        }
+    
+        public static Value valueOf(int valeur) {
+            return (Value) map.get(valeur);
+        }
+    
+        public int getValue1() {
+            return value;
         }
     }
 
@@ -65,6 +83,7 @@ public class Card {
     public String toString() {
         return color + "_" + value;
     }
+    
     @Override
     public boolean equals(Object other){
         if(other instanceof Card){

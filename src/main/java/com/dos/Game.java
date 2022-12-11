@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.dos.Card.Value;
+
 public class Game {
 
     private int currentPlayer;
@@ -287,6 +289,74 @@ public class Game {
         }
 
         for (Card card : pHand) {
+
+            /*for (int i = 0; i < 2; i++) {
+                if (card.getColor() == validColor[i]){
+                    Value value = card.getValue();
+                    int valueInt = value.getValue();
+                    int validValue1Int = validValue1.getValue1();
+                    int z = pHand.indexOf(card); 
+                for (int h = z+1; h<=(pHand.size()-1); h++){
+                    Value value2 = pHand.get(h).getValue();
+                    int valueInt2 = value2.getValue1();
+
+                    if (pHand.get(h).getColor() == validColor1 && valueInt + valueInt2 == validValue1Int ){
+                        hasPlayed = true;
+                        invalidCards[i++] = true;
+                        yellDos(pid);
+
+                        Card myCard = pHand.get(h);
+                        stockPile1.add(pHand.get(h));
+
+                        pHand.remove(pHand.get(h-1));
+
+                        pHand.remove(card);
+
+                        stockPile1.add(card);
+
+                        System.out.println(pid + " joue les cartes  " + myCard + " et " + card);
+                        break;
+                    } 
+
+                }
+                if (hasPlayed){
+                    break;
+                }
+            }
+            else if (card.getColor() == validColor2){
+                Value value = card.getValue();
+                int valueInt = value.getValue1();
+                int validValue2Int = validValue2.getValue1();
+                int z = pHand.indexOf(card); 
+                for (int h = z+1; h<=(pHand.size()-1); h++){
+
+                        Value value2 = pHand.get(h).getValue();
+                        int valueInt2 = value2.getValue1();
+
+                    if (pHand.get(h).getColor() == validColor2 && valueInt + valueInt2 == validValue2Int ){
+                        hasPlayed = true;
+                        invalidCards[i++] = true;
+                        yellDos(pid);
+                        System.out.println("l'index de h  "+ pHand.indexOf(pHand.get(h)) );
+                        System.out.println("la carte est "+ pHand.get(h));
+                        System.out.println("longueur de pHand  "+ pHand.size() );
+                        Card myCard = pHand.get(h);
+                        stockPile2.add(pHand.get(h));
+
+                        pHand.remove(card);
+                        pHand.remove(pHand.get(h-1));
+                        stockPile2.add(card);
+                        System.out.println(pid + " joue les cartes  " + myCard + " et " + card);
+                        break;
+                    } 
+
+                }
+                if (hasPlayed){
+                    break;
+                }
+            }**/
+
+
             if (validCardPlay(card) && !hasPlayed) {
                 hasPlayed = true;
                 validCards[indexValidCards++] = true; 
@@ -306,7 +376,7 @@ public class Game {
             }
         }
 
-        if (t[wild] > 0 && !hasPlayed) {
+        if (t[wild] > 0 && hasPlayed == false) {
 
             validCards[indexValidCards++] = true; 
 
