@@ -94,9 +94,7 @@ public class GameTest {
         playerIds.add("Lili");
         Card carte = new Card (Card.Color.RED, Card.Value.FOUR);
         Game game = new Game(playerIds);
-        Card.Color validColor1 = Card.Color.BLUE;
-        Card.Value valiValue1 = Card.Value.FIVE;
-        assertEquals(false, game.validCardPlay1(carte));
+        assertEquals(false, game.validCardPlay(carte));
 
     }
 
@@ -108,7 +106,7 @@ public class GameTest {
         playerIds.add("Lili");
         Card carte = new Card (Card.Color.RED, Card.Value.FOUR);
         Game game = new Game(playerIds);
-        assertEquals(false, game.validCardPlay2(carte));
+        assertEquals(false, game.validCardPlay(carte));
 
     }
 }

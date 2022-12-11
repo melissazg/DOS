@@ -98,11 +98,6 @@ public class Game {
      * check player hand
      */
 
-    public Card getPlayerCard(String pid, int choice) {
-        ArrayList<Card> hand = getPlayerHand(pid);
-        return hand.get(choice);
-    }
-
     public boolean hasEmptyHand(String pid) {
         return getPlayerHand(pid).isEmpty();
     }
@@ -262,7 +257,6 @@ public class Game {
 
         else if (hasTwoIdenticalCards(pid) && hasPlayed == false) {
             validCards[indexValidCards++] = true; 
-            System.out.println("possède 2 identiques");
             
             for (int z = 0; z < pHand.size(); z++) {
                 for (int i = 0; i < 2; i++) {
@@ -289,75 +283,44 @@ public class Game {
         }
 
         for (Card card : pHand) {
+            /* somme 2 cartes de la même couleur que stockpile */
+            for (int i = 0; i < 2; i++) {
+                if (card.getColor() == validColor[i]) {
 
-            /*for (int i = 0; i < 2; i++) {
-                if (card.getColor() == validColor[i]){
                     Value value = card.getValue();
-                    int valueInt = value.getValue();
-                    int validValue1Int = validValue1.getValue1();
-                    int z = pHand.indexOf(card); 
-                for (int h = z+1; h<=(pHand.size()-1); h++){
-                    Value value2 = pHand.get(h).getValue();
-                    int valueInt2 = value2.getValue1();
+                    int valueInt = value.getValue1();
+                    int validValue1Int = validValue[i].getValue1();
+                    int z = pHand.indexOf(card);
 
-                    if (pHand.get(h).getColor() == validColor1 && valueInt + valueInt2 == validValue1Int ){
-                        hasPlayed = true;
-                        invalidCards[i++] = true;
-                        yellDos(pid);
-
-                        Card myCard = pHand.get(h);
-                        stockPile1.add(pHand.get(h));
-
-                        pHand.remove(pHand.get(h-1));
-
-                        pHand.remove(card);
-
-                        stockPile1.add(card);
-
-                        System.out.println(pid + " joue les cartes  " + myCard + " et " + card);
-                        break;
-                    } 
-
-                }
-                if (hasPlayed){
-                    break;
-                }
-            }
-            else if (card.getColor() == validColor2){
-                Value value = card.getValue();
-                int valueInt = value.getValue1();
-                int validValue2Int = validValue2.getValue1();
-                int z = pHand.indexOf(card); 
-                for (int h = z+1; h<=(pHand.size()-1); h++){
-
+                    for (int h = z + 1; h < pHand.size(); h++) {
                         Value value2 = pHand.get(h).getValue();
                         int valueInt2 = value2.getValue1();
 
-                    if (pHand.get(h).getColor() == validColor2 && valueInt + valueInt2 == validValue2Int ){
-                        hasPlayed = true;
-                        invalidCards[i++] = true;
-                        yellDos(pid);
-                        System.out.println("l'index de h  "+ pHand.indexOf(pHand.get(h)) );
-                        System.out.println("la carte est "+ pHand.get(h));
-                        System.out.println("longueur de pHand  "+ pHand.size() );
-                        Card myCard = pHand.get(h);
-                        stockPile2.add(pHand.get(h));
+                        if (pHand.get(h).getColor() == validColor[i] && valueInt + valueInt2 == validValue1Int) {
+                            hasPlayed = true;
+                            validCards[indexValidCards++] = true;
+                            yellDos(pid);
 
-                        pHand.remove(card);
-                        pHand.remove(pHand.get(h-1));
-                        stockPile2.add(card);
-                        System.out.println(pid + " joue les cartes  " + myCard + " et " + card);
-                        break;
-                    } 
+                            Card myCard = pHand.get(h);
+                            stockPile.get(i).add(pHand.get(h));
 
+                            pHand.remove(pHand.get(h - 1));
+
+                            pHand.remove(card);
+
+                            stockPile.get(i).add(card);
+
+                            System.out.println("\n" + pid + " joue les cartes " + myCard + " et " + card + " dans la stockPile " + (i + 1) + ".");
+                            break;
+                        }
+                    }
+                break;
                 }
-                if (hasPlayed){
-                    break;
-                }
-            }**/
-
-
-            if (validCardPlay(card) && !hasPlayed) {
+            }
+            if (hasPlayed){
+                break;
+            }
+            else if (validCardPlay(card)) {
                 hasPlayed = true;
                 validCards[indexValidCards++] = true; 
                 for (int i = 0; i < 2; i++) {
