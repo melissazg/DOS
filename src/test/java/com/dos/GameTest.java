@@ -15,13 +15,7 @@ public class GameTest {
         playerIds.add("Didou");
         playerIds.add("Lili");
         Game game = new Game(playerIds);
-        //currentPlayer = (currentPlayer + 1) % playerIds.size();
-        assertEquals("Dida",game.getCurrentPlayer());
-    }
-
-    @Test
-    void testGetPlayerCard() {
-
+        assertEquals("Dida", game.getCurrentPlayer());
     }
 
     @Test
@@ -36,7 +30,7 @@ public class GameTest {
         playerIds.add("Didou");
         playerIds.add("Lili");
         Game game = new Game(playerIds);
-        assertEquals(7,game.getPlayerHandSize(playerIds.get(0)));
+        assertEquals(7, game.getPlayerHandSize(playerIds.get(0)));
     }
 
     @Test
@@ -46,7 +40,7 @@ public class GameTest {
         playerIds.add("Didou");
         playerIds.add("Lili");
         Game game = new Game(playerIds);
-        assertEquals(playerIds,game.getPlayers());
+        assertEquals(playerIds, game.getPlayers());
     }
 
     @Test
@@ -56,7 +50,7 @@ public class GameTest {
         playerIds.add("Didou");
         playerIds.add("Lili");
         Game game = new Game(playerIds);
-        assertEquals(false,game.hasEmptyHand(playerIds.get(0)));
+        assertEquals(false, game.hasEmptyHand(playerIds.get(0)));
     }
 
     @Test
@@ -80,33 +74,59 @@ public class GameTest {
         playerIds.add("Dida");
         playerIds.add("Didou");
         playerIds.add("Lili");
-        Card carte = new Card (Card.Color.RED, Card.Value.FOUR);
         Game game = new Game(playerIds);
         game.submitDraw(playerIds.get(0));
         assertEquals(8, game.getPlayerHandSize(playerIds.get(0)));
     }
 
     @Test
-    void testValidCardPlay1() { // probleme ne marche pas pour true
+    void testValidCardPlay() { 
         List<String> playerIds = new ArrayList<String>();
-        playerIds.add("Dida");
-        playerIds.add("Didou");
-        playerIds.add("Lili");
-        Card carte = new Card (Card.Color.RED, Card.Value.FOUR);
+        playerIds.add("joueur 1");
+        playerIds.add("joueur 2");
+        playerIds.add("joueur 3");
         Game game = new Game(playerIds);
-        assertEquals(false, game.validCardPlay(carte));
-
+        Card.Color[] validColor = {Card.Color.BLUE, Card.Color.GREEN};
+        Card.Value[] validValue= {Card.Value.TEN, Card.Value.NINE};
+        Card card = new Card(Card.Color.GREEN, Card.Value.ONE);
+        assertEquals(true, game.validCardPlay(card, validColor, validValue));
     }
 
     @Test
-    void testValidCardPlay2() { // probleme ne marche pas pour true
+    void testHasThreeIdenticalCards(){
         List<String> playerIds = new ArrayList<String>();
-        playerIds.add("Dida");
-        playerIds.add("Didou");
-        playerIds.add("Lili");
-        Card carte = new Card (Card.Color.RED, Card.Value.FOUR);
+        playerIds.add("joueur 1");
+        playerIds.add("joueur 2");
+        playerIds.add("joueur 3");
         Game game = new Game(playerIds);
-        assertEquals(false, game.validCardPlay(carte));
+        Card card1 = new Card(Card.Color.RED, Card.Value.ONE);
+        Card card2 = new Card(Card.Color.RED, Card.Value.ONE);
+        Card card3 = new Card(Card.Color.RED, Card.Value.ONE);
+        Card card4 = new Card(Card.Color.YELLOW, Card.Value.NINE);
+        ArrayList<Card> pHand = new ArrayList<>();
+        pHand.add(card1);
+        pHand.add(card2);
+        pHand.add(card3);
+        pHand.add(card4);
+        Card.Value [] validValue = {Card.Value.ONE , Card.Value.NINE};
+        assertEquals(true, game.hasThreeIdenticalCards(pHand, validValue));
+    }
 
+    @Test
+    void testHasTwoIdenticalCards(){
+    List<String> playerIds = new ArrayList<String>();
+        playerIds.add("joueur 1");
+        playerIds.add("joueur 2");
+        playerIds.add("joueur 3");
+        Game game = new Game(playerIds);
+        Card card1 = new Card(Card.Color.RED, Card.Value.ONE);
+        Card card2 = new Card(Card.Color.RED, Card.Value.ONE);
+        Card card4 = new Card(Card.Color.YELLOW, Card.Value.NINE);
+        ArrayList<Card> pHand = new ArrayList<>();
+        pHand.add(card1);
+        pHand.add(card2);
+        pHand.add(card4);
+        Card.Value [] validValue = {Card.Value.ONE , Card.Value.NINE};
+        assertEquals(true, game.hasTwoIdenticalCards(pHand, validValue));
     }
 }

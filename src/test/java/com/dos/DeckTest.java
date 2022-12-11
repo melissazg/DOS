@@ -2,12 +2,13 @@ package com.dos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 public class DeckTest {
     @Test
     void testDrawCard() {
-        
         Deck deck = new Deck();
         deck.reset();
         Card [] cards = deck.drawCard(7);
@@ -22,22 +23,23 @@ public class DeckTest {
 
     @Test
     void testReplaceDeckWith() {
-        /*Deck deck = new Deck();
+        Deck deck = new Deck();
         deck.reset();
-        //int cardsInDeck =0;
-        Card card = new Card (Color.RED, Value.FOUR);
-        Card card1 = new Card (Color.BLUE, Value.THREE);
-        ArrayList<Card> cards = new ArrayList<>();
+        Card card = new Card (Card.Color.RED, Card.Value.FOUR);
+        Card card1 = new Card (Card.Color.BLUE, Card.Value.THREE);
+        ArrayList<Card> cards = new ArrayList<Card>();
         cards.add(card);
         cards.add(card1);
 
         deck.replaceDeckWith(cards);
-        assertEquals(2, cards.length);*/
+        assertEquals(2, cards.size());
     }
 
     @Test
     void testReset() {
-
+        Deck deck = new Deck();
+        deck.reset();
+        assertEquals(false, deck.isEmpty());
     }
 
     @Test

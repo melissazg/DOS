@@ -102,7 +102,7 @@ public class Game {
         return getPlayerHand(pid).isEmpty();
     }
 
-    public boolean validCardPlay(Card card) {
+    public boolean validCardPlay(Card card, Card.Color [] validColor, Card.Value [] validValue) {
         return (card.getColor() == validColor[0] || card.getValue() == validValue[0]) 
         || (card.getColor() == validColor[1] || card.getValue() == validValue[1]);
     }
@@ -127,27 +127,7 @@ public class Game {
         }
     }
 
-    /*
-    public int sumCardValue(String pid){
-        ArrayList<Card> pHand = getPlayerHand(pid);
-        int 
-
-        for (int i = 0; i < pHand.size(); i++) {
-            if (pHand.get(i).getColor() == validColor1) {
-                for (int j = i + 1; j < pHand.size(); j++) {
-                    if (pHand.get(j).getColor() == validColor1) {
-                        
-                        if ()) {
-
-                    }
-                }
-            }
-        }
-    }
-    */
-
-    public boolean hasThreeIdenticalCards(String pid){
-        ArrayList<Card> pHand = getPlayerHand(pid);
+    public boolean hasThreeIdenticalCards(ArrayList<Card> pHand, Card.Value [] validValue) {
         int countValueStockPile = 1;
 
         for (int i = 0; i < pHand.size(); i++) {
@@ -167,8 +147,7 @@ public class Game {
         return false;
     }
 
-    public boolean hasTwoIdenticalCards(String pid){
-        ArrayList<Card> pHand = getPlayerHand(pid);
+    public boolean hasTwoIdenticalCards(ArrayList<Card> pHand, Card.Value [] validValue) {
         int countValueStockPile = 1;
 
         for (int i = 0; i < pHand.size(); i++) {
@@ -221,9 +200,8 @@ public class Game {
             }
         }
 
-        if (hasThreeIdenticalCards(pid)) {
+        if (hasThreeIdenticalCards(pHand, validValue)) {
             validCards[indexValidCards++] = true; 
-            System.out.println("possède 3 identiques");
 
             for (int z = 0; z < pHand.size(); z++) {
                 for (int i = 0; i < 2; i++) {
@@ -255,7 +233,7 @@ public class Game {
             }
         }
 
-        else if (hasTwoIdenticalCards(pid) && hasPlayed == false) {
+        else if (hasTwoIdenticalCards(pHand, validValue) && hasPlayed == false) {
             validCards[indexValidCards++] = true; 
             
             for (int z = 0; z < pHand.size(); z++) {
@@ -320,7 +298,7 @@ public class Game {
             if (hasPlayed){
                 break;
             }
-            else if (validCardPlay(card)) {
+            else if (validCardPlay(card, validColor, validValue)) {
                 hasPlayed = true;
                 validCards[indexValidCards++] = true; 
                 for (int i = 0; i < 2; i++) {
@@ -373,7 +351,7 @@ public class Game {
                     yellDos(pid);
                     pHand.remove(card);
                     stockPile.get(0).add(card);
-                    System.out.println("\n" + pid + " joue la carte " + card + " dans le stockPile 1 et demande la couleur " + laCouleurMax + ".");
+                    System.out.println(pid + " joue la carte " + card + " dans le stockPile 1 et demande la couleur " + laCouleurMax + ".");
                     break;
                 }
             }
