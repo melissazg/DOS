@@ -16,7 +16,7 @@ public class Main {
             playerIds.add("Joueur " + i);
         }
 
-        Game game = new Game(playerIds);
+        Game game = new Game(playerIds);mvn jacoco:prepare-agent test install jacoco:report
         game.start(game);
 
         final Queue<String> players = new LinkedList<>();

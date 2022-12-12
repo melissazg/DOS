@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-dos,com.dos,Deck,36,317,3,17,3,41,3,14,0,7
-dos,com.dos,Card.Color,4,56,0,0,1,6,1,1,1,1
-dos,com.dos,Card.Value,9,166,0,2,2,20,2,4,2,3
-dos,com.dos,Game,898,238,117,21,150,44,70,13,3,11
-dos,com.dos,Card,4,48,3,3,1,10,3,5,0,5
+dos,com.dos,Deck,38,317,3,17,3,41,3,14,0,7
+dos,com.dos,Card.Color,4,35,0,0,1,7,1,1,1,1
+dos,com.dos,Card.Value,6,124,0,2,1,22,1,5,1,4
+dos,com.dos,Game,264,927,58,80,57,154,44,45,1,19
+dos,com.dos,Card,2,50,2,4,1,10,2,6,0,5
 dos,com.dos,Main,222,0,14,0,30,0,9,0,2,0

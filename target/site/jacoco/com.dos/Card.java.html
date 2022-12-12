@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Card {
 
-    public enum Color {
+<span class="fc" id="L12">    public enum Color {</span>
 <span class="fc" id="L13">        BLUE,</span>
 <span class="fc" id="L14">        RED,</span>
 <span class="fc" id="L15">        GREEN,</span>
@@ -23,7 +23,7 @@ public class Card {
         } 
     }
 
-    public enum Value {
+<span class="fc" id="L26">    public enum Value {</span>
 <span class="fc" id="L27">        ONE(1),</span>
 <span class="fc" id="L28">        THREE(3),</span>
 <span class="fc" id="L29">        FOUR(4),</span>
@@ -60,7 +60,7 @@ public class Card {
         }
     
         public int getValue1() {
-<span class="nc" id="L63">            return value;</span>
+<span class="fc" id="L63">            return value;</span>
         }
     }
 
@@ -88,7 +88,7 @@ public class Card {
     public boolean equals(Object other){
 <span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if(other instanceof Card){</span>
 <span class="fc" id="L90">            Card card = (Card)other;</span>
-<span class="pc bpc" id="L91" title="2 of 4 branches missed.">            return this.color.equals(card.getColor()) &amp;&amp; this.value.equals(card.getValue());</span>
+<span class="pc bpc" id="L91" title="1 of 4 branches missed.">            return this.color.equals(card.getColor()) &amp;&amp; this.value.equals(card.getValue());</span>
         }
 <span class="nc" id="L93">        return false;</span>
     }

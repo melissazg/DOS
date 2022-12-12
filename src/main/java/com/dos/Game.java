@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.crypto.dsig.spec.HMACParameterSpec;
+
 import com.dos.Card.Value;
 
 public class Game {
@@ -161,29 +163,8 @@ public class Game {
         return false;
     }
 
-    /**
-     * @param pid
-     */
-
-    public void submitPlayerCard(String pid) {
-
-        ArrayList<Card> pHand = getPlayerHand(pid);
-  
-        // si toutes les cartes de la main du joueur ne sont pas valides (tout le tableau contient des false), il piochera
-        boolean [] validCards = new boolean [getPlayerHandSize(getCurrentPlayer())];
-        int counterFalse = 0;
-        int indexValidCards = 0; 
-
-        boolean hasPlayed = false;
-
-        // compteur de toutes les couleurs dispo dans la main
-        int blue = 0;
-        int red = 0;
-        int green = 0;
-        int yellow = 0;
-        int wild = 0;
-        int[] t = {blue, red, green, yellow, wild};
-
+    // compteur de toutes les couleurs dispo dans la main
+    public void countColor (ArrayList<Card> pHand, int[] t){ 
         Card.Color[] colors = Card.Color.values();
 
         for (Card card : pHand) {
@@ -194,119 +175,204 @@ public class Game {
             }
         }
 
-        if (hasThreeIdenticalCards(pHand, validValue)) {
-            validCards[indexValidCards++] = true; 
+    }
+    public void submitThreeCards (String pid, ArrayList<Card> pHand, Card.Value [] validValue){ 
+        boolean hasPlayed = false;
+        for (int z = 0; z < pHand.size(); z++) {
+            for (int i = 0; i < 2; i++) {
+            if (pHand.get(z).getValue() == validValue[i]) {
 
-            for (int z = 0; z < pHand.size(); z++) {
-                for (int i = 0; i < 2; i++) {
-                    if (pHand.get(z).getValue() == validValue[i]) {
-
-                        for (int y = z + 1; y < pHand.size(); y++) {
-                            if (pHand.get(y).equals(pHand.get(z))) {
-                               
-                                for (int x = y + 1; x < pHand.size(); x++) {
-                                    if (pHand.get(x).equals(pHand.get(z))){
-                                        validColor[i] = pHand.get(z).getColor();
-                                        Card[] removeCards = {pHand.get(z), pHand.get(y), pHand.get(x)};
-                                        System.out.println("\n" + pid + " joue trois cartes " + pHand.get(z) + " dans la stockPile " + (i + 1) + ". \n");
-                                        for (int j = 0; j < 3; j++) {
-                                            yellDos(pid);
-                                            pHand.remove(removeCards[j]);
-                                            stockPile.get(i).add(removeCards[j]);
-                                        }
-                                        hasPlayed = true;
-                                        break;
-                                    }
-                                }
-                            break;
-                            }
-                        }
-                    break;
-                    }
-                }
-            }
-        }
-
-        else if (hasTwoIdenticalCards(pHand, validValue) && hasPlayed == false) {
-            validCards[indexValidCards++] = true; 
-            
-            for (int z = 0; z < pHand.size(); z++) {
-                for (int i = 0; i < 2; i++) {
-                    if (pHand.get(z).getValue() == validValue[i]) {
-                        for (int y = z + 1; y < pHand.size(); y++) {
-                            if (pHand.get(y).equals(pHand.get(z))) {
+                for (int y = z + 1; y < pHand.size(); y++) {
+                    if (pHand.get(y).equals(pHand.get(z))) {
+                    
+                        for (int x = y + 1; x < pHand.size(); x++) {
+                            if (pHand.get(x).equals(pHand.get(z))){
                                 validColor[i] = pHand.get(z).getColor();
-                                Card[] removeCards = {pHand.get(z), pHand.get(y)};
-                                System.out.println("\n" + pid + " joue deux cartes " + pHand.get(z)  + " dans la stockPile " + (i + 1) + ".");
-
-                                for (int j = 0; j < 2; j++) {
+                                Card[] removeCards = {pHand.get(z), pHand.get(y-1), pHand.get(x-2)};
+                                System.out.println("\n" + pid + " joue trois cartes " + pHand.get(z) + " dans la stockPile " + (i + 1) + ". \n");
+                                for (int j = 0; j < 3; j++) {
                                     yellDos(pid);
-                                    pHand.remove(removeCards[j]);
                                     stockPile.get(i).add(removeCards[j]);
+                                    pHand.remove(removeCards[j]);
+                                    
                                 }
                                 hasPlayed = true;
                                 break;
                             }
                         }
-                        break;
+                    break;
                     }
                 }
+            break;
             }
         }
+    }
+}
 
-        for (Card card : pHand) {
-            /* somme 2 cartes de la même couleur que stockpile */
+    public void submitTwoCards (String pid, ArrayList<Card> pHand, Card.Value [] validValue){ 
+        boolean hasPlayed = false;
+        for (int z = 0; z < pHand.size(); z++) {
             for (int i = 0; i < 2; i++) {
-                if (card.getColor() == validColor[i]) {
+                if (pHand.get(z).getValue() == validValue[i]) {
+                    for (int y = z + 1; y < pHand.size(); y++) {
+                        if (pHand.get(y).equals(pHand.get(z))) {
+                            validColor[i] = pHand.get(z).getColor();
+                            Card[] removeCards = {pHand.get(z), pHand.get(y)};
+                            System.out.println("\n" + pid + " joue deux cartes " + pHand.get(z)  + " dans la stockPile " + (i + 1) + ".");
 
-                    Value value = card.getValue();
-                    int valueInt = value.getValue1();
-                    int validValue1Int = validValue[i].getValue1();
-                    int z = pHand.indexOf(card);
-
-                    for (int h = z + 1; h < pHand.size(); h++) {
-                        Value value2 = pHand.get(h).getValue();
-                        int valueInt2 = value2.getValue1();
-
-                        if (pHand.get(h).getColor() == validColor[i] && valueInt + valueInt2 == validValue1Int) {
-                            hasPlayed = true;
-                            validCards[indexValidCards++] = true;
-                            yellDos(pid);
-
-                            Card myCard = pHand.get(h);
-                            stockPile.get(i).add(pHand.get(h));
-
-                            pHand.remove(pHand.get(h - 1));
-
-                            pHand.remove(card);
-
-                            stockPile.get(i).add(card);
-
-                            System.out.println("\n" + pid + " joue les cartes " + myCard + " et " + card + " dans la stockPile " + (i + 1) + ".");
+                            for (int j = 0; j < 2; j++) {
+                                yellDos(pid);
+                                pHand.remove(removeCards[j]);
+                                stockPile.get(i).add(removeCards[j]);
+                            }
+                            hasPlayed =true;
                             break;
                         }
                     }
-                break;
+                    break;
                 }
             }
+        }
+    }
+    
+    /* somme 2 cartes de la même couleur que stockpile */    
+    public void sumCards (String pid, ArrayList<Card> pHand,Card card, Card.Value [] validValue, Card.Color [] validColor){
+        boolean [] validCards = new boolean [getPlayerHandSize(getCurrentPlayer())];
+        boolean hasPlayed = false;
+        int indexValidCards = 0;
+        for (int i = 0; i < 2; i++) {
+            if (card.getColor() == validColor[i]) {
+
+                Value value = card.getValue();
+                int valueInt = value.getValue1();
+                int validValue1Int = validValue[i].getValue1();
+                int z = pHand.indexOf(card);
+
+                for (int h = z + 1; h < pHand.size(); h++) {
+                    Value value2 = pHand.get(h).getValue();
+                    int valueInt2 = value2.getValue1();
+
+                    if (pHand.get(h).getColor() == validColor[i] && valueInt + valueInt2 == validValue1Int) {
+                        hasPlayed = true;
+                        validCards[indexValidCards++] = true;
+                        yellDos(pid);
+
+                        Card myCard = pHand.get(h);
+                        stockPile.get(i).add(pHand.get(h));
+
+                        pHand.remove(pHand.get(h - 1));
+
+                        pHand.remove(card);
+
+                        stockPile.get(i).add(card);
+
+                        System.out.println("\n" + pid + " joue les cartes " + myCard + " et " + card + " dans la stockPile " + (i + 1) + ".");
+                        break;
+                    }
+                }
+            break;
+            }
+        }
+    }
+    
+    public void addCard (Card card, Card.Value [] validValue, Card.Color [] validColor, String pid, ArrayList<Card> pHand){
+        for (int i = 0; i < 2; i++) {
+            if (card.getColor() == validColor[i] || card.getValue() == validValue[i]) {
+                validColor[i] = card.getColor();
+                validValue[i] = card.getValue();
+                System.out.println();
+                yellDos(pid);
+                pHand.remove(card);
+                stockPile.get(i).add(card);
+                System.out.println(pid + " joue la carte " + card + " dans la stockPile " + (i + 1) + ".");
+                break;
+            }
+        }
+    }
+
+    public void playWildTwo(int [] t, Card.Color [] validColor, String pid, ArrayList<Card> pHand){
+        int indCouleurMax = 0;
+        int max = t[0];
+        for (int k = 1; k < t.length - 1; k++) {
+            if (max < t[k]) {
+                max = t[k];
+                indCouleurMax = k;
+            }
+        }
+        Card.Color laCouleurMax = Card.Color.WILD;
+        if (indCouleurMax == 0) {
+            laCouleurMax = Card.Color.BLUE;
+        }
+        else if (indCouleurMax == 1) {
+            laCouleurMax = Card.Color.RED;
+        }
+        else if (indCouleurMax == 2) {
+            laCouleurMax = Card.Color.GREEN;
+        }
+        else if (indCouleurMax == 3) {
+            laCouleurMax = Card.Color.YELLOW;
+        }
+
+        validColor[0] = laCouleurMax;
+
+        for (Card card : pHand) {
+            if (card.getValue() == Card.Value.WILD_TWO) {
+                System.out.println();
+                yellDos(pid);
+                pHand.remove(card);
+                stockPile.get(0).add(card);
+                System.out.println(pid + " joue la carte " + card + " dans le stockPile 1 et demande la couleur " + laCouleurMax + ".");
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param pid
+     */
+
+    public void submitPlayerCard(String pid) {
+
+        ArrayList<Card> pHand = getPlayerHand(pid);
+        int blue = 0;
+        int red = 0;
+        int green = 0;
+        int yellow = 0;
+        int wild = 0;
+        int[] t = {blue, red, green, yellow, wild};
+  
+        // si toutes les cartes de la main du joueur ne sont pas valides (tout le tableau contient des false), il piochera
+        boolean [] validCards = new boolean [getPlayerHandSize(getCurrentPlayer())];
+        int counterFalse = 0;
+        int indexValidCards = 0; 
+
+        boolean hasPlayed = false;
+
+        
+        countColor(pHand,t);
+
+        if (hasThreeIdenticalCards(pHand, validValue)) {
+            validCards[indexValidCards++] = true; 
+
+            submitThreeCards(pid, pHand, validValue);
+        }
+
+        else if (hasTwoIdenticalCards(pHand, validValue) && hasPlayed == false) {
+            validCards[indexValidCards++] = true; 
+            
+            submitTwoCards(pid, pHand, validValue);
+        }
+
+        for (Card card : pHand) {
+            
+            sumCards(pid, pHand, card, validValue, validColor);
             if (hasPlayed){
                 break;
             }
             else if (validCardPlay(card, validColor, validValue)) {
                 hasPlayed = true;
                 validCards[indexValidCards++] = true; 
-                for (int i = 0; i < 2; i++) {
-                    if (card.getColor() == validColor[i] || card.getValue() == validValue[i]) {
-                        validColor[i] = card.getColor();
-                        validValue[i] = card.getValue();
-                        System.out.println();
-                        yellDos(pid);
-                        pHand.remove(card);
-                        stockPile.get(i).add(card);
-                        System.out.println(pid + " joue la carte " + card + " dans la stockPile " + (i + 1) + ".");
-                        break;
-                    }
-                }
+                addCard(card, validValue, validColor, pid, pHand);
             break;
             }
         }
@@ -315,40 +381,7 @@ public class Game {
 
             validCards[indexValidCards++] = true; 
 
-            int indCouleurMax = 0;
-            int max = t[0];
-            for (int k = 1; k < t.length - 1; k++) {
-                if (max < t[k]) {
-                    max = t[k];
-                    indCouleurMax = k;
-                }
-            }
-            Card.Color laCouleurMax = Card.Color.WILD;
-            if (indCouleurMax == 0) {
-                laCouleurMax = Card.Color.BLUE;
-            }
-            else if (indCouleurMax == 1) {
-                laCouleurMax = Card.Color.RED;
-            }
-            else if (indCouleurMax == 2) {
-                laCouleurMax = Card.Color.GREEN;
-            }
-            else if (indCouleurMax == 3) {
-                laCouleurMax = Card.Color.YELLOW;
-            }
-
-            validColor[0] = laCouleurMax;
-
-            for (Card card : pHand) {
-                if (card.getValue() == Card.Value.WILD_TWO) {
-                    System.out.println();
-                    yellDos(pid);
-                    pHand.remove(card);
-                    stockPile.get(0).add(card);
-                    System.out.println(pid + " joue la carte " + card + " dans le stockPile 1 et demande la couleur " + laCouleurMax + ".");
-                    break;
-                }
-            }
+            playWildTwo(t, validColor, pid, pHand);
         }
 
         for (int j = 0; j < validCards.length; j++){

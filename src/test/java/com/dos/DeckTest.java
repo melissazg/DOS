@@ -1,6 +1,8 @@
 package com.dos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import java.util.ArrayList;
 
@@ -41,9 +43,6 @@ public class DeckTest {
         deck.reset();
         assertEquals(false, deck.isEmpty());
     }
-
-    @Test
-    void testShuffle() {
-
-    }
 }
+
+   
